@@ -1,7 +1,7 @@
 import Foundation
 import GRDB
 
-struct Account: Codable, Identifiable, Equatable {
+struct Account: Codable, Identifiable, Equatable, Sendable {
     var id: UUID = UUID()
     var issuer: String
     var accountName: String
@@ -17,8 +17,4 @@ struct Account: Codable, Identifiable, Equatable {
 
 extension Account: FetchableRecord, MutablePersistableRecord {
     static let databaseTableName = "account"
-
-    mutating func willSave(_ db: Database) throws {
-        updatedAt = Date()
-    }
 }
