@@ -41,9 +41,12 @@ final class AccountsViewModel: ObservableObject {
         period: Int = 30
     ) async throws {
         guard let secretData = Base32.decode(secretBase32) else {
+            print("[MFA] ERROR: Failed to decode base32 secret: \(secretBase32)")
             throw AccountsError.invalidSecret
         }
+        print("[MFA] Decoded secret: \(secretData.count) bytes")
         let encrypted = try CryptoService.encrypt(secretData)
+        print("[MFA] Encrypted secret: \(encrypted.count) bytes")
         let account = Account(
             issuer: issuer,
             accountName: accountName,
@@ -52,8 +55,11 @@ final class AccountsViewModel: ObservableObject {
             digits: digits,
             period: period
         )
-        _ = try await store.save(account)
+        print("[MFA] Saving account: \(issuer) - \(accountName), id=\(account.id)")
+        let saved = try await store.save(account)
+        print("[MFA] Saved account: \(saved.id), now loading...")
         await loadAccounts()
+        print("[MFA] After load: \(accounts.count) accounts in view")
     }
 
     func deleteAccount(_ account: Account) async throws {
@@ -76,10 +82,12 @@ final class AccountsViewModel: ObservableObject {
     func importFromGoogleAuth(_ uri: String) async throws -> Int {
         let googleAccounts = try GoogleAuthParser.parse(uri)
         for ga in googleAccounts {
-            guard ga.type == .totp else { continue }
+            // Use issuer from the dedicated field if available, otherwise extract from name
+            let finalIssuer = ga.issuer.isEmpty ? extractIssuer(from: ga.name) : ga.issuer
+            let finalAccountName = extractAccountName(from: ga.name)
             try await addAccount(
-                issuer: extractIssuer(from: ga.name),
-                accountName: extractAccountName(from: ga.name),
+                issuer: finalIssuer,
+                accountName: finalAccountName,
                 secretBase32: ga.secretBase32,
                 algorithm: ga.algorithm,
                 digits: ga.digits

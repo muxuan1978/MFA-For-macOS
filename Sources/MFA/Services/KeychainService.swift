@@ -39,7 +39,7 @@ enum KeychainService {
             kSecAttrService as String: serviceIdentifier,
             kSecAttrAccount as String: "encryption-key",
             kSecValueData as String: data,
-            kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlock,
+            kSecAttrSynchronizable as String: false,
         ]
         let status = SecItemAdd(query as CFDictionary, nil)
         guard status == errSecSuccess else {

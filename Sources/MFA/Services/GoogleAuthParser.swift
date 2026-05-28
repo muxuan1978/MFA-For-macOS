@@ -3,14 +3,14 @@ import Foundation
 struct GoogleAuthAccount {
     let name: String
     let secretBase32: String
+    let issuer: String
     let algorithm: TOTPAlgorithm
     let digits: Int
     let type: OTPType
 
     enum OTPType: Int {
-        case unspecified = 0
-        case hotp = 1
-        case totp = 2
+        case hotp = 0
+        case totp = 1
     }
 }
 
@@ -27,13 +27,32 @@ enum GoogleAuthParser {
             throw GoogleAuthError.missingData
         }
 
-        let decodedData = dataParam.removingPercentEncoding ?? dataParam
-        guard let protobufData = Data(base64Encoded: decodedData) else {
+        guard let protobufData = Data(base64Encoded: dataParam) else {
             throw GoogleAuthError.invalidBase64
         }
 
         return try parseProtobuf(protobufData)
     }
+
+    // MARK: - Protobuf Parsing
+
+    // Google Authenticator protobuf schema (AOSP):
+    // message MigrationPayload {
+    //   repeated OtpParameters otp_parameters = 1;
+    //   int32 version = 2;
+    //   int32 batch_size = 3;
+    //   int32 batch_index = 4;
+    //   int32 batch_id = 5;
+    // }
+    // message OtpParameters {
+    //   bytes secret = 1;          // raw secret bytes
+    //   string name = 2;           // e.g. "Issuer:account@domain"
+    //   string issuer = 3;         // issuer name
+    //   Algorithm algorithm = 4;   // 0=SHA1, 1=SHA256, 2=SHA512
+    //   DigitCount digits = 5;     // 0=6, 1=8
+    //   OtpType type = 6;          // 0=HOTP, 1=TOTP
+    //   int64 counter = 7;         // for HOTP
+    // }
 
     private static func parseProtobuf(_ data: Data) throws -> [GoogleAuthAccount] {
         let reader = ProtobufReader(data: data)
@@ -57,31 +76,37 @@ enum GoogleAuthParser {
 
     private static func parseAccountValue(_ data: Data) throws -> GoogleAuthAccount? {
         let reader = ProtobufReader(data: data)
-        var name = ""
+
         var secretData = Data()
+        var name = ""
+        var issuer = ""
         var algorithm: TOTPAlgorithm = .sha1
         var digitCount = 6
         var type: GoogleAuthAccount.OTPType = .totp
 
         while let (fieldNumber, wireType) = reader.readTag() {
             switch (fieldNumber, wireType) {
-            case (1, .lengthDelimited):
-                name = try reader.readString()
-            case (2, .lengthDelimited):
+            case (1, .lengthDelimited): // secret (bytes)
                 secretData = try reader.readLengthDelimited()
-            case (3, .varint):
+            case (2, .lengthDelimited): // name (string)
+                name = try reader.readString()
+            case (3, .lengthDelimited): // issuer (string)
+                issuer = try reader.readString()
+            case (4, .varint): // algorithm
                 let raw = try reader.readVarint()
                 algorithm = switch raw {
-                case 2: .sha256
-                case 3: .sha512
+                case 1: .sha256
+                case 2: .sha512
                 default: .sha1
                 }
-            case (4, .varint):
+            case (5, .varint): // digits
                 let raw = try reader.readVarint()
-                digitCount = (raw == 2) ? 8 : 6
-            case (5, .varint):
+                digitCount = (raw == 1) ? 8 : 6
+            case (6, .varint): // type
                 let raw = try reader.readVarint()
                 type = GoogleAuthAccount.OTPType(rawValue: Int(raw)) ?? .totp
+            case (7, .varint): // counter
+                _ = try reader.readVarint()
             default:
                 try reader.skip(wireType: wireType)
             }
@@ -93,6 +118,7 @@ enum GoogleAuthParser {
         return GoogleAuthAccount(
             name: name,
             secretBase32: secretBase32,
+            issuer: issuer,
             algorithm: algorithm,
             digits: digitCount,
             type: type
@@ -106,6 +132,8 @@ enum GoogleAuthParser {
         case parsingFailed
     }
 }
+
+// MARK: - Protobuf Reader
 
 private enum WireType: UInt8 {
     case varint = 0
