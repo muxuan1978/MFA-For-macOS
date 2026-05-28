@@ -1,4 +1,5 @@
 import Cocoa
+import CoreGraphics
 import Foundation
 
 // MARK: - Color Helpers
@@ -7,188 +8,170 @@ func cgColor(r: Int, g: Int, b: Int, a: CGFloat = 1.0) -> CGColor {
     CGColor(red: CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: a)
 }
 
-// MARK: - Drawing Functions
+// MARK: - Draw Icon
 
-func drawShieldIcon(ctx: CGContext, size: CGFloat) {
+func drawIcon(ctx: CGContext, size: CGFloat) {
     let scale = size / 1024.0
     ctx.saveGState()
     ctx.scaleBy(x: scale, y: scale)
 
-    // Background: rounded rect with gradient
     let bgRect = CGRect(x: 0, y: 0, width: 1024, height: 1024)
-    let cornerRadius: CGFloat = 224
+    let cornerRadius: CGFloat = 220
+
+    // Clip to rounded rect
     let bgPath = CGPath(roundedRect: bgRect, cornerWidth: cornerRadius, cornerHeight: cornerRadius, transform: nil)
     ctx.addPath(bgPath)
     ctx.clip()
 
-    // Gradient background (deep blue-purple)
+    // Background gradient: deep indigo -> blue
     let colorSpace = CGColorSpaceCreateDeviceRGB()
-    let gradientColors = [
-        cgColor(r: 30, g: 30, b: 80),
-        cgColor(r: 55, g: 40, b: 140),
-        cgColor(r: 75, g: 50, b: 180),
+
+    let bgColors = [
+        cgColor(r: 20, g: 20, b: 60),
+        cgColor(r: 35, g: 35, b: 100),
+        cgColor(r: 50, g: 50, b: 140),
     ] as CFArray
-    let gradientLocations: [CGFloat] = [0.0, 0.5, 1.0]
-    if let gradient = CGGradient(colorsSpace: colorSpace, colors: gradientColors, locations: gradientLocations) {
-        ctx.drawLinearGradient(gradient, start: CGPoint(x: 0, y: 0), end: CGPoint(x: 1024, y: 1024), options: [])
+    if let bg = CGGradient(colorsSpace: colorSpace, colors: bgColors, locations: [0.0, 0.5, 1.0]) {
+        ctx.drawLinearGradient(bg, start: CGPoint(x: 0, y: 0), end: CGPoint(x: 1024, y: 1024), options: [])
     }
 
-    // Subtle inner glow circle
+    // Subtle radial glow top-center
     let glowColors = [
-        cgColor(r: 100, g: 80, b: 220, a: 0.3),
-        cgColor(r: 100, g: 80, b: 220, a: 0.0),
+        cgColor(r: 100, g: 100, b: 255, a: 0.15),
+        cgColor(r: 100, g: 100, b: 255, a: 0.0),
     ] as CFArray
-    if let glowGradient = CGGradient(colorsSpace: colorSpace, colors: glowColors, locations: [0.0, 1.0]) {
-        ctx.drawRadialGradient(glowGradient,
-                               startCenter: CGPoint(x: 512, y: 400),
-                               startRadius: 0,
-                               endCenter: CGPoint(x: 512, y: 400),
-                               endRadius: 500,
-                               options: [])
+    if let glow = CGGradient(colorsSpace: colorSpace, colors: glowColors, locations: [0.0, 1.0]) {
+        ctx.drawRadialGradient(glow, startCenter: CGPoint(x: 512, y: 300), startRadius: 0, endCenter: CGPoint(x: 512, y: 300), endRadius: 450, options: [])
     }
 
     // Shield shape
-    let shieldWidth: CGFloat = 460
-    let shieldHeight: CGFloat = 520
-    let shieldX: CGFloat = (1024 - shieldWidth) / 2
-    let shieldY: CGFloat = 200
-
-    ctx.saveGState()
+    let shieldX: CGFloat = 262
+    let shieldY: CGFloat = 160
+    let shieldW: CGFloat = 500
+    let shieldH: CGFloat = 580
 
     let shieldPath = CGMutablePath()
-    // Top-left corner of shield
-    shieldPath.move(to: CGPoint(x: shieldX + 40, y: shieldY))
-    // Top edge
-    shieldPath.addLine(to: CGPoint(x: shieldX + shieldWidth - 40, y: shieldY))
-    // Top-right curve
-    shieldPath.addQuadCurve(to: CGPoint(x: shieldX + shieldWidth, y: shieldY + 40),
-                            control: CGPoint(x: shieldX + shieldWidth, y: shieldY))
-    // Right edge
-    shieldPath.addLine(to: CGPoint(x: shieldX + shieldWidth, y: shieldY + shieldHeight * 0.55))
-    // Bottom-right curve to point
-    shieldPath.addQuadCurve(to: CGPoint(x: shieldX + shieldWidth * 0.5, y: shieldY + shieldHeight + 20),
-                            control: CGPoint(x: shieldX + shieldWidth + 10, y: shieldY + shieldHeight * 0.85))
-    // Bottom-left curve to point
-    shieldPath.addQuadCurve(to: CGPoint(x: shieldX, y: shieldY + shieldHeight * 0.55),
-                            control: CGPoint(x: shieldX - 10, y: shieldY + shieldHeight * 0.85))
-    // Left edge
-    shieldPath.addLine(to: CGPoint(x: shieldX, y: shieldY + 40))
-    // Top-left curve
-    shieldPath.addQuadCurve(to: CGPoint(x: shieldX + 40, y: shieldY),
-                            control: CGPoint(x: shieldX, y: shieldY))
+    let r: CGFloat = 50
+    shieldPath.move(to: CGPoint(x: shieldX + r, y: shieldY))
+    shieldPath.addLine(to: CGPoint(x: shieldX + shieldW - r, y: shieldY))
+    shieldPath.addQuadCurve(to: CGPoint(x: shieldX + shieldW, y: shieldY + r), control: CGPoint(x: shieldX + shieldW, y: shieldY))
+    shieldPath.addLine(to: CGPoint(x: shieldX + shieldW, y: shieldY + shieldH * 0.55))
+    shieldPath.addQuadCurve(to: CGPoint(x: shieldX + shieldW * 0.5, y: shieldY + shieldH + 30), control: CGPoint(x: shieldX + shieldW + 15, y: shieldY + shieldH * 0.82))
+    shieldPath.addQuadCurve(to: CGPoint(x: shieldX, y: shieldY + shieldH * 0.55), control: CGPoint(x: shieldX - 15, y: shieldY + shieldH * 0.82))
+    shieldPath.addLine(to: CGPoint(x: shieldX, y: shieldY + r))
+    shieldPath.addQuadCurve(to: CGPoint(x: shieldX + r, y: shieldY), control: CGPoint(x: shieldX, y: shieldY))
     shieldPath.closeSubpath()
 
-    // Shield fill with gradient
-    let shieldColors = [
-        cgColor(r: 80, g: 160, b: 255),
-        cgColor(r: 60, g: 120, b: 240),
-        cgColor(r: 40, g: 80, b: 200),
-    ] as CFArray
-    if let shieldGradient = CGGradient(colorsSpace: colorSpace, colors: shieldColors, locations: [0.0, 0.5, 1.0]) {
-        ctx.addPath(shieldPath)
-        ctx.clip()
-        ctx.drawLinearGradient(shieldGradient, start: CGPoint(x: 512, y: shieldY), end: CGPoint(x: 512, y: shieldY + shieldHeight), options: [])
-    }
-
-    // Shield border highlight
-    ctx.restoreGState()
-    ctx.addPath(shieldPath)
-    ctx.setStrokeColor(cgColor(r: 140, g: 200, b: 255, a: 0.6))
-    ctx.setLineWidth(6)
-    ctx.strokePath()
-
-    // Inner shield highlight (lighter inner border)
+    // Shield fill gradient
     ctx.saveGState()
     ctx.addPath(shieldPath)
     ctx.clip()
 
-    // Shield glass reflection
-    let reflColors = [
-        cgColor(r: 255, g: 255, b: 255, a: 0.15),
-        cgColor(r: 255, g: 255, b: 255, a: 0.0),
+    let shieldColors = [
+        cgColor(r: 66, g: 133, b: 244),
+        cgColor(r: 50, g: 110, b: 230),
+        cgColor(r: 30, g: 80, b: 200),
     ] as CFArray
-    if let reflGradient = CGGradient(colorsSpace: colorSpace, colors: reflColors, locations: [0.0, 1.0]) {
-        ctx.drawLinearGradient(reflGradient,
-                               start: CGPoint(x: 512, y: shieldY),
-                               end: CGPoint(x: 512, y: shieldY + shieldHeight * 0.5),
-                               options: [])
+    if let sg = CGGradient(colorsSpace: colorSpace, colors: shieldColors, locations: [0.0, 0.5, 1.0]) {
+        ctx.drawLinearGradient(sg, start: CGPoint(x: 512, y: shieldY), end: CGPoint(x: 512, y: shieldY + shieldH), options: [])
     }
 
-    // Keyhole / Lock icon in center of shield
-    let lockCenterY = shieldY + shieldHeight * 0.38
-    let lockCenterX: CGFloat = 512
+    // Glass reflection on shield top half
+    let reflColors = [
+        cgColor(r: 255, g: 255, b: 255, a: 0.12),
+        cgColor(r: 255, g: 255, b: 255, a: 0.0),
+    ] as CFArray
+    if let rg = CGGradient(colorsSpace: colorSpace, colors: reflColors, locations: [0.0, 1.0]) {
+        ctx.drawLinearGradient(rg, start: CGPoint(x: 512, y: shieldY), end: CGPoint(x: 512, y: shieldY + shieldH * 0.45), options: [])
+    }
+    ctx.restoreGState()
 
-    // Keyhole circle (top)
-    let keyholeRadius: CGFloat = 65
-    ctx.setFillColor(cgColor(r: 20, g: 30, b: 70, a: 0.7))
-    let keyholeCircle = CGPath(ellipseIn: CGRect(x: lockCenterX - keyholeRadius,
-                                                   y: lockCenterY - keyholeRadius,
-                                                   width: keyholeRadius * 2,
-                                                   height: keyholeRadius * 2), transform: nil)
-    ctx.addPath(keyholeCircle)
+    // Shield border
+    ctx.addPath(shieldPath)
+    ctx.setStrokeColor(cgColor(r: 120, g: 180, b: 255, a: 0.4))
+    ctx.setLineWidth(4)
+    ctx.strokePath()
+
+    // Lock icon (centered in shield upper area)
+    let lockCX: CGFloat = 512
+    let lockCY: CGFloat = shieldY + shieldH * 0.32
+
+    // Lock body (rounded rect)
+    let lockW: CGFloat = 80
+    let lockH: CGFloat = 60
+    let lockBody = CGPath(roundedRect: CGRect(x: lockCX - lockW/2, y: lockCY - lockH/2 + 16, width: lockW, height: lockH), cornerWidth: 10, cornerHeight: 10, transform: nil)
+    ctx.addPath(lockBody)
+    ctx.setFillColor(cgColor(r: 255, g: 255, b: 255, a: 0.9))
     ctx.fillPath()
 
-    // Keyhole slot (bottom triangle)
-    let slotPath = CGMutablePath()
-    let slotTopWidth: CGFloat = 30
-    let slotBottomWidth: CGFloat = 55
-    let slotHeight: CGFloat = 80
-    slotPath.move(to: CGPoint(x: lockCenterX - slotTopWidth, y: lockCenterY + 10))
-    slotPath.addLine(to: CGPoint(x: lockCenterX - slotBottomWidth, y: lockCenterY + slotHeight))
-    slotPath.addLine(to: CGPoint(x: lockCenterX + slotBottomWidth, y: lockCenterY + slotHeight))
-    slotPath.addLine(to: CGPoint(x: lockCenterX + slotTopWidth, y: lockCenterY + 10))
-    slotPath.closeSubpath()
-    ctx.addPath(slotPath)
+    // Lock shackle (U shape)
+    let shackleW: CGFloat = 48
+    let shackleH: CGFloat = 38
+    let shackleRect = CGRect(x: lockCX - shackleW/2, y: lockCY - shackleH + 10, width: shackleW, height: shackleH)
+    ctx.addEllipse(in: shackleRect)
+    ctx.setFillColor(cgColor(r: 20, g: 30, b: 80, a: 0.0))
+    ctx.setStrokeColor(cgColor(r: 255, g: 255, b: 255, a: 0.9))
+    ctx.setLineWidth(10)
+    ctx.strokePath()
+
+    // Cut out inner of shackle
+    let innerShackleW: CGFloat = 28
+    let innerShackleH: CGFloat = 24
+    let innerShackleRect = CGRect(x: lockCX - innerShackleW/2, y: lockCY - innerShackleH + 12, width: innerShackleW, height: innerShackleH)
+    ctx.addEllipse(in: innerShackleRect)
+    ctx.setFillColor(cgColor(r: 50, g: 110, b: 230))
     ctx.fillPath()
 
-    // "6" digits display at bottom of shield
-    let digitY = shieldY + shieldHeight * 0.65
-    let digitSpacing: CGFloat = 56
+    // Lock keyhole
+    let keyholeY = lockCY + 16
+    ctx.addEllipse(in: CGRect(x: lockCX - 7, y: keyholeY - 12, width: 14, height: 14))
+    ctx.setFillColor(cgColor(r: 30, g: 80, b: 200))
+    ctx.fillPath()
+
+    // TOTP digits in lower shield area
+    let digitY = shieldY + shieldH * 0.62
     let digits = "648"
-    let startDigitX = lockCenterX - (CGFloat(digits.count - 1) * digitSpacing) / 2
+    let digitSpacing: CGFloat = 72
+    let startX = lockCX - (CGFloat(digits.count - 1) * digitSpacing) / 2
 
-    // Digit background boxes
-    ctx.setFillColor(cgColor(r: 20, g: 30, b: 70, a: 0.5))
+    // Digit background pills
+    ctx.setFillColor(cgColor(r: 255, g: 255, b: 255, a: 0.15))
     for i in 0..<digits.count {
-        let boxX = startDigitX + CGFloat(i) * digitSpacing - 32
-        let boxRect = CGRect(x: boxX, y: digitY - 32, width: 64, height: 56)
-        let boxPath = CGPath(roundedRect: boxRect, cornerWidth: 10, cornerHeight: 10, transform: nil)
-        ctx.addPath(boxPath)
+        let pillX = startX + CGFloat(i) * digitSpacing - 30
+        let pillRect = CGRect(x: pillX, y: digitY - 30, width: 60, height: 50)
+        let pillPath = CGPath(roundedRect: pillRect, cornerWidth: 10, cornerHeight: 10, transform: nil)
+        ctx.addPath(pillPath)
         ctx.fillPath()
     }
 
-    // Draw digits using string drawing instead of showText
-    let font = NSFont.monospacedSystemFont(ofSize: 40, weight: .bold)
+    // Draw digits using NSAttributedString
+    let font = NSFont.monospacedSystemFont(ofSize: 36, weight: .bold)
     let attrs: [NSAttributedString.Key: Any] = [
         .font: font,
-        .foregroundColor: NSColor(cgColor: cgColor(r: 180, g: 220, b: 255, a: 0.9))!,
+        .foregroundColor: NSColor(white: 1.0, alpha: 0.95),
     ]
 
     for (i, char) in digits.enumerated() {
         let charStr = String(char)
-        let charX = startDigitX + CGFloat(i) * digitSpacing
-        let strSize = charStr.size(withAttributes: attrs)
-        let drawX = charX - strSize.width / 2
-        let drawY = digitY - strSize.height / 2
+        let charSize = charStr.size(withAttributes: attrs)
+        let charX = startX + CGFloat(i) * digitSpacing
 
-        // Flip for Cocoa coordinate system
         ctx.saveGState()
-        let strRect = CGRect(x: drawX, y: 1024 - drawY - strSize.height, width: strSize.width, height: strSize.height)
-        let nsStr = NSAttributedString(string: charStr, attributes: attrs)
-        nsStr.draw(with: strRect, options: [.usesLineFragmentOrigin], context: nil)
+        let drawRect = CGRect(
+            x: charX - charSize.width / 2,
+            y: 1024 - digitY - charSize.height / 2 - 2,
+            width: charSize.width,
+            height: charSize.height
+        )
+        let attrStr = NSAttributedString(string: charStr, attributes: attrs)
+        attrStr.draw(with: drawRect, options: [.usesLineFragmentOrigin], context: nil)
         ctx.restoreGState()
     }
 
-    // Restore from shield clip
-    ctx.restoreGState()
-
-    // Subtle border on the overall icon
-    ctx.addPath(CGPath(roundedRect: bgRect.insetBy(dx: 2, dy: 2),
-                       cornerWidth: cornerRadius - 2,
-                       cornerHeight: cornerRadius - 2,
-                       transform: nil))
-    ctx.setStrokeColor(cgColor(r: 100, g: 100, b: 150, a: 0.3))
-    ctx.setLineWidth(4)
+    // Outer border
+    ctx.addPath(CGPath(roundedRect: bgRect.insetBy(dx: 1, dy: 1), cornerWidth: cornerRadius - 1, cornerHeight: cornerRadius - 1, transform: nil))
+    ctx.setStrokeColor(cgColor(r: 80, g: 80, b: 130, a: 0.25))
+    ctx.setLineWidth(2)
     ctx.strokePath()
 
     ctx.restoreGState()
@@ -198,127 +181,37 @@ func drawShieldIcon(ctx: CGContext, size: CGFloat) {
 
 func createBitmapContext(size: Int) -> CGContext {
     let colorSpace = CGColorSpaceCreateDeviceRGB()
-    let bytesPerPixel = 4
-    let bytesPerRow = bytesPerPixel * size
     let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
-
-    let context = CGContext(data: nil,
-                            width: size,
-                            height: size,
-                            bitsPerComponent: 8,
-                            bytesPerRow: bytesPerRow,
-                            space: colorSpace,
-                            bitmapInfo: bitmapInfo.rawValue)!
-    // Flip Y so (0,0) is top-left
-    context.translateBy(x: 0, y: CGFloat(size))
-    context.scaleBy(x: 1, y: -1)
-    return context
+    let ctx = CGContext(data: nil, width: size, height: size, bitsPerComponent: 8, bytesPerRow: 4 * size, space: colorSpace, bitmapInfo: bitmapInfo.rawValue)!
+    ctx.translateBy(x: 0, y: CGFloat(size))
+    ctx.scaleBy(x: 1, y: -1)
+    return ctx
 }
 
 func savePNG(image: CGImage, url: URL) {
-    let destination = CGImageDestinationCreateWithURL(url as CFURL, "public.png" as CFString, 1, nil)!
-    CGImageDestinationAddImage(destination, image, nil)
-    CGImageDestinationFinalize(destination)
+    let dest = CGImageDestinationCreateWithURL(url as CFURL, "public.png" as CFString, 1, nil)!
+    CGImageDestinationAddImage(dest, image, nil)
+    CGImageDestinationFinalize(dest)
 }
 
-// MARK: - Generate All Sizes
+// MARK: - Generate
 
 let iconSizes: [(name: String, size: Int)] = [
-    ("icon_16x16", 16),
-    ("icon_16x16@2x", 32),
-    ("icon_32x32", 32),
-    ("icon_32x32@2x", 64),
-    ("icon_128x128", 128),
-    ("icon_128x128@2x", 256),
-    ("icon_256x256", 256),
-    ("icon_256x256@2x", 512),
-    ("icon_512x512", 512),
-    ("icon_512x512@2x", 1024),
+    ("icon_16x16", 16), ("icon_16x16@2x", 32),
+    ("icon_32x32", 32), ("icon_32x32@2x", 64),
+    ("icon_128x128", 128), ("icon_128x128@2x", 256),
+    ("icon_256x256", 256), ("icon_256x256@2x", 512),
+    ("icon_512x512", 512), ("icon_512x512@2x", 1024),
 ]
 
 let outputDir = URL(fileURLWithPath: "/opt/develop/tools/MFA/Resources/Assets.xcassets/AppIcon.appiconset/")
 
 for icon in iconSizes {
     let ctx = createBitmapContext(size: icon.size)
-    drawShieldIcon(ctx: ctx, size: CGFloat(icon.size))
+    drawIcon(ctx: ctx, size: CGFloat(icon.size))
     let image = ctx.makeImage()!
-    let url = outputDir.appendingPathComponent("\(icon.name).png")
-    savePNG(image: image, url: url)
+    savePNG(image: image, url: outputDir.appendingPathComponent("\(icon.name).png"))
     print("Generated \(icon.name).png (\(icon.size)x\(icon.size))")
 }
 
-// Update Contents.json with filenames
-let contentsJSON = """
-{
-  "images" : [
-    {
-      "filename" : "icon_16x16.png",
-      "idiom" : "mac",
-      "scale" : "1x",
-      "size" : "16x16"
-    },
-    {
-      "filename" : "icon_16x16@2x.png",
-      "idiom" : "mac",
-      "scale" : "2x",
-      "size" : "16x16"
-    },
-    {
-      "filename" : "icon_32x32.png",
-      "idiom" : "mac",
-      "scale" : "1x",
-      "size" : "32x32"
-    },
-    {
-      "filename" : "icon_32x32@2x.png",
-      "idiom" : "mac",
-      "scale" : "2x",
-      "size" : "32x32"
-    },
-    {
-      "filename" : "icon_128x128.png",
-      "idiom" : "mac",
-      "scale" : "1x",
-      "size" : "128x128"
-    },
-    {
-      "filename" : "icon_128x128@2x.png",
-      "idiom" : "mac",
-      "scale" : "2x",
-      "size" : "128x128"
-    },
-    {
-      "filename" : "icon_256x256.png",
-      "idiom" : "mac",
-      "scale" : "1x",
-      "size" : "256x256"
-    },
-    {
-      "filename" : "icon_256x256@2x.png",
-      "idiom" : "mac",
-      "scale" : "2x",
-      "size" : "256x256"
-    },
-    {
-      "filename" : "icon_512x512.png",
-      "idiom" : "mac",
-      "scale" : "1x",
-      "size" : "512x512"
-    },
-    {
-      "filename" : "icon_512x512@2x.png",
-      "idiom" : "mac",
-      "scale" : "2x",
-      "size" : "512x512"
-    }
-  ],
-  "info" : {
-    "author" : "xcode",
-    "version" : 1
-  }
-}
-"""
-
-try contentsJSON.write(to: outputDir.appendingPathComponent("Contents.json"), atomically: true, encoding: .utf8)
-print("Updated Contents.json")
-print("Done! All icons generated.")
+print("Done!")
