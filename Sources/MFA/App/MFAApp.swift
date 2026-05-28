@@ -32,6 +32,6 @@ struct MFAApp: App {
         }
         .windowStyle(.titleBar)
         .windowToolbarStyle(.unified(showsTitle: true))
-        .defaultSize(width: 700, height: 500)
+        .defaultSize(width: 780, height: 560)
     }
 }

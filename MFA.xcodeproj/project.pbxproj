@@ -11,6 +11,7 @@
 		1F1B911E83E5F5124E139F86 /* MainWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5646A28D4BBC9B116973599 /* MainWindowView.swift */; };
 		224D9A79B5691F3366A21BCA /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08771CB4589FBADEE351DFF /* DatabaseManager.swift */; };
 		230538EA9AD24C55AA99ACA1 /* OTPAuthParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2C688D8F8093044A9F3C0E /* OTPAuthParserTests.swift */; };
+		2B02E74A53734BD2E946D719 /* AccountCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558370768294BC9646EE8FCB /* AccountCardView.swift */; };
 		307E7697DFD88DE3E4A4F655 /* ImageImportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3498B42824A656CD14D3712E /* ImageImportService.swift */; };
 		30A47AAA21A9944FD9441311 /* TOTPAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD3E17B07042CE462F4E01 /* TOTPAlgorithm.swift */; };
 		323762B537BAFFB22066F62E /* ImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA09BFD602C93520F429C9E /* ImportView.swift */; };
@@ -60,6 +61,7 @@
 		31AAA00065A49043CD83FF41 /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
 		3498B42824A656CD14D3712E /* ImageImportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageImportService.swift; sourceTree = "<group>"; };
 		48D2D4392E21F92E016F630E /* CryptoServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoServiceTests.swift; sourceTree = "<group>"; };
+		558370768294BC9646EE8FCB /* AccountCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCardView.swift; sourceTree = "<group>"; };
 		565BE1174CEA566CA853D2DA /* TOTPEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TOTPEngineTests.swift; sourceTree = "<group>"; };
 		5C226BD0BB7A0F57EA8F9568 /* AccountStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountStore.swift; sourceTree = "<group>"; };
 		631AD5A9A855E03AEE565FE9 /* AccountsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsViewModel.swift; sourceTree = "<group>"; };
@@ -180,6 +182,7 @@
 		9442700FF265AF9413E5F6A4 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				558370768294BC9646EE8FCB /* AccountCardView.swift */,
 				9970DEB3F5B527B293B4A0DF /* AccountDetailView.swift */,
 				F641E2803D96CE4B17BA8ACD /* AccountEditView.swift */,
 				982E566EE0BC419B998A0E7D /* AccountListView.swift */,
@@ -328,6 +331,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE53B86EB1452F3A4DB8B0C8 /* Account.swift in Sources */,
+				2B02E74A53734BD2E946D719 /* AccountCardView.swift in Sources */,
 				540CA7CC29D8AE9779DAA939 /* AccountDetailView.swift in Sources */,
 				196F726B160EEF0EC1A0ED99 /* AccountEditView.swift in Sources */,
 				E7D18367787473FA37B71D8E /* AccountListView.swift in Sources */,
