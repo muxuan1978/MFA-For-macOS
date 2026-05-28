@@ -41,6 +41,9 @@ struct MainWindowView: View {
         .sheet(isPresented: $viewModel.showingAddSheet) {
             AccountEditView(viewModel: viewModel)
         }
+        .sheet(isPresented: $viewModel.showingScanner) {
+            QRScanView(viewModel: viewModel)
+        }
         .alert("Import Result", isPresented: $viewModel.showingImportResult, presenting: viewModel.importMessage) { _ in
             Button("OK") {}
         } message: { message in
