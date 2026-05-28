@@ -3,8 +3,11 @@ import XCTest
 
 final class GoogleAuthParserTests: XCTestCase {
     func testParseMigrationURI() throws {
-        // Build protobuf using correct Google Auth schema:
+        // Google Authenticator protobuf schema (observed from real exports):
         // OtpParameters: secret=1, name=2, issuer=3, algorithm=4, digits=5, type=6
+        // Enums are 1-based: algorithm 1=SHA1, 2=SHA256, 3=SHA512
+        //                    digits 1=6, 2=8
+        //                    type 2=TOTP, 1=HOTP(?)
         let secretBytes = Base32.decode("JBSWY3DPEHPK3PXP")!
 
         var accountBytes = Data()
@@ -22,15 +25,15 @@ final class GoogleAuthParserTests: XCTestCase {
         accountBytes.append(0x1A)
         accountBytes.append(UInt8(issuerData.count))
         accountBytes.append(issuerData)
-        // field 4 (algorithm): SHA1=0 — tag = (4 << 3) | 0 = 0x20
+        // field 4 (algorithm): SHA1=1 — tag = (4 << 3) | 0 = 0x20
         accountBytes.append(0x20)
-        accountBytes.append(0x00)
-        // field 5 (digits): 6=0 — tag = (5 << 3) | 0 = 0x28
-        accountBytes.append(0x28)
-        accountBytes.append(0x00)
-        // field 6 (type): TOTP=1 — tag = (6 << 3) | 0 = 0x30
-        accountBytes.append(0x30)
         accountBytes.append(0x01)
+        // field 5 (digits): 6=1 — tag = (5 << 3) | 0 = 0x28
+        accountBytes.append(0x28)
+        accountBytes.append(0x01)
+        // field 6 (type): TOTP=2 — tag = (6 << 3) | 0 = 0x30
+        accountBytes.append(0x30)
+        accountBytes.append(0x02)
 
         var payload = Data()
         // MigrationPayload field 1 (otpParameters)
@@ -54,7 +57,7 @@ final class GoogleAuthParserTests: XCTestCase {
         XCTAssertEqual(accounts[0].type, .totp)
     }
 
-    func testParseSHA256Account() throws {
+    func testParseSHA256And8Digits() throws {
         let secretBytes = Base32.decode("JBSWY3DPEHPK3PXP")!
 
         var accountBytes = Data()
@@ -67,15 +70,15 @@ final class GoogleAuthParserTests: XCTestCase {
         accountBytes.append(0x12)
         accountBytes.append(UInt8(nameData.count))
         accountBytes.append(nameData)
-        // field 4 (algorithm): SHA256=1
+        // field 4 (algorithm): SHA256=2
         accountBytes.append(0x20)
-        accountBytes.append(0x01)
-        // field 5 (digits): 8=1
+        accountBytes.append(0x02)
+        // field 5 (digits): 8=2
         accountBytes.append(0x28)
-        accountBytes.append(0x01)
-        // field 6 (type): TOTP=1
+        accountBytes.append(0x02)
+        // field 6 (type): TOTP=2
         accountBytes.append(0x30)
-        accountBytes.append(0x01)
+        accountBytes.append(0x02)
 
         var payload = Data()
         payload.append(0x0A)

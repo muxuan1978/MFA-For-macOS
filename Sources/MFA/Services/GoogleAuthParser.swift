@@ -92,19 +92,19 @@ enum GoogleAuthParser {
                 name = try reader.readString()
             case (3, .lengthDelimited): // issuer (string)
                 issuer = try reader.readString()
-            case (4, .varint): // algorithm
+            case (4, .varint): // algorithm: 1=SHA1, 2=SHA256, 3=SHA512
                 let raw = try reader.readVarint()
                 algorithm = switch raw {
-                case 1: .sha256
-                case 2: .sha512
+                case 2: .sha256
+                case 3: .sha512
                 default: .sha1
                 }
-            case (5, .varint): // digits
+            case (5, .varint): // digits: 1=6, 2=8
                 let raw = try reader.readVarint()
-                digitCount = (raw == 1) ? 8 : 6
-            case (6, .varint): // type
+                digitCount = (raw == 2) ? 8 : 6
+            case (6, .varint): // type: 1=HOTP(?), 2=TOTP
                 let raw = try reader.readVarint()
-                type = GoogleAuthAccount.OTPType(rawValue: Int(raw)) ?? .totp
+                type = (raw == 1) ? .hotp : .totp
             case (7, .varint): // counter
                 _ = try reader.readVarint()
             default:
