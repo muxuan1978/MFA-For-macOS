@@ -25,9 +25,9 @@ struct MainWindowView: View {
                 }
 
                 Button {
-                    viewModel.showingScanner = true
+                    viewModel.showingImport = true
                 } label: {
-                    Label("Scan QR Code", systemImage: "qrcode.viewfinder")
+                    Label("Import", systemImage: "square.and.arrow.down")
                 }
 
                 Button {
@@ -41,8 +41,8 @@ struct MainWindowView: View {
         .sheet(isPresented: $viewModel.showingAddSheet) {
             AccountEditView(viewModel: viewModel)
         }
-        .sheet(isPresented: $viewModel.showingScanner) {
-            QRScanView(viewModel: viewModel)
+        .sheet(isPresented: $viewModel.showingImport) {
+            ImportView(viewModel: viewModel)
         }
         .alert("Import Result", isPresented: $viewModel.showingImportResult, presenting: viewModel.importMessage) { _ in
             Button("OK") {}

@@ -1,22 +1,21 @@
 import SwiftUI
 
-extension Notification.Name {
-    static let openMainWindow = Notification.Name("openMainWindow")
-}
-
 struct MenuBarView: View {
     @ObservedObject var viewModel: AccountsViewModel
+    @Environment(\.openWindow) private var openWindow
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
+            // Header
             HStack {
                 Text("MFA")
                     .font(.headline)
                 Spacer()
                 Button {
-                    openMainWindow()
+                    openWindow(id: "main")
                 } label: {
                     Image(systemName: "gearshape")
+                        .font(.body)
                 }
                 .buttonStyle(.plain)
             }
@@ -25,13 +24,16 @@ struct MenuBarView: View {
 
             Divider()
 
+            // Content
             if viewModel.accounts.isEmpty {
-                VStack(spacing: 8) {
-                    Text("No accounts")
+                VStack(spacing: 12) {
+                    Text("No accounts yet")
                         .foregroundStyle(.secondary)
-                        .padding(.vertical, 20)
-                    Button("Add Account") {
-                        openMainWindow()
+                        .padding(.vertical, 24)
+                    Button {
+                        openWindow(id: "main")
+                    } label: {
+                        Label("Add Account", systemImage: "plus.circle")
                     }
                 }
                 .frame(maxWidth: .infinity)
@@ -51,12 +53,12 @@ struct MenuBarView: View {
 
             Divider()
 
+            // Footer
             HStack {
                 Button {
-                    openMainWindow()
+                    openWindow(id: "main")
                 } label: {
-                    Image(systemName: "plus.circle")
-                    Text("Manage")
+                    Label("Manage", systemImage: "plus.circle")
                 }
                 Spacer()
                 Button("Quit") {
@@ -70,10 +72,5 @@ struct MenuBarView: View {
         .onAppear {
             Task { await viewModel.loadAccounts() }
         }
-    }
-
-    private func openMainWindow() {
-        NSApp.activate(ignoringOtherApps: true)
-        NotificationCenter.default.post(name: .openMainWindow, object: nil)
     }
 }

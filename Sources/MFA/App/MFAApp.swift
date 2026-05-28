@@ -18,21 +18,20 @@ struct MFAApp: App {
         }
         .menuBarExtraStyle(.window)
 
-        WindowGroup(id: "main") {
+        Window("MFA - Accounts", id: "main") {
             MainWindowView(viewModel: accountsVM)
-                .onReceive(NotificationCenter.default.publisher(for: .openMainWindow)) { _ in
-                    openMainWindow()
+                .onAppear {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        NSApp.activate(ignoringOtherApps: true)
+                        if let window = NSApp.keyWindow {
+                            window.makeKeyAndOrderFront(nil)
+                            window.orderFrontRegardless()
+                        }
+                    }
                 }
         }
         .windowStyle(.titleBar)
         .windowToolbarStyle(.unified(showsTitle: true))
         .defaultSize(width: 700, height: 500)
-    }
-
-    private func openMainWindow() {
-        if let window = NSApp.windows.first(where: { $0.identifier?.rawValue == "main" }) {
-            window.makeKeyAndOrderFront(nil)
-        }
-        NSApp.activate(ignoringOtherApps: true)
     }
 }
