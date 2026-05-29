@@ -16,8 +16,8 @@ targets:
     platform: macOS
     sources:
       - Sources/MFA
-    resources:
-      - Resources/Assets.xcassets
+      - path: Resources/Assets.xcassets
+        buildPhase: resources
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.mfa.app

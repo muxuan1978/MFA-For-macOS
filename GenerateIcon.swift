@@ -44,11 +44,11 @@ func drawIcon(ctx: CGContext, size: CGFloat) {
         ctx.drawRadialGradient(glow, startCenter: CGPoint(x: 512, y: 300), startRadius: 0, endCenter: CGPoint(x: 512, y: 300), endRadius: 450, options: [])
     }
 
-    // Shield shape
-    let shieldX: CGFloat = 262
-    let shieldY: CGFloat = 160
-    let shieldW: CGFloat = 500
-    let shieldH: CGFloat = 580
+    // Shield shape (larger)
+    let shieldX: CGFloat = 212
+    let shieldY: CGFloat = 110
+    let shieldW: CGFloat = 600
+    let shieldH: CGFloat = 700
 
     let shieldPath = CGMutablePath()
     let r: CGFloat = 50
@@ -94,37 +94,37 @@ func drawIcon(ctx: CGContext, size: CGFloat) {
 
     // Lock icon (centered in shield upper area)
     let lockCX: CGFloat = 512
-    let lockCY: CGFloat = shieldY + shieldH * 0.32
+    let lockCY: CGFloat = shieldY + shieldH * 0.30
 
-    // Lock body (rounded rect)
-    let lockW: CGFloat = 80
-    let lockH: CGFloat = 60
-    let lockBody = CGPath(roundedRect: CGRect(x: lockCX - lockW/2, y: lockCY - lockH/2 + 16, width: lockW, height: lockH), cornerWidth: 10, cornerHeight: 10, transform: nil)
+    // Lock body (rounded rect) — larger
+    let lockW: CGFloat = 110
+    let lockH: CGFloat = 85
+    let lockBody = CGPath(roundedRect: CGRect(x: lockCX - lockW/2, y: lockCY - lockH/2 + 22, width: lockW, height: lockH), cornerWidth: 14, cornerHeight: 14, transform: nil)
     ctx.addPath(lockBody)
     ctx.setFillColor(cgColor(r: 255, g: 255, b: 255, a: 0.9))
     ctx.fillPath()
 
-    // Lock shackle (U shape)
-    let shackleW: CGFloat = 48
-    let shackleH: CGFloat = 38
-    let shackleRect = CGRect(x: lockCX - shackleW/2, y: lockCY - shackleH + 10, width: shackleW, height: shackleH)
+    // Lock shackle (U shape) — larger
+    let shackleW: CGFloat = 66
+    let shackleH: CGFloat = 52
+    let shackleRect = CGRect(x: lockCX - shackleW/2, y: lockCY - shackleH + 14, width: shackleW, height: shackleH)
     ctx.addEllipse(in: shackleRect)
     ctx.setFillColor(cgColor(r: 20, g: 30, b: 80, a: 0.0))
     ctx.setStrokeColor(cgColor(r: 255, g: 255, b: 255, a: 0.9))
-    ctx.setLineWidth(10)
+    ctx.setLineWidth(14)
     ctx.strokePath()
 
-    // Cut out inner of shackle
-    let innerShackleW: CGFloat = 28
-    let innerShackleH: CGFloat = 24
-    let innerShackleRect = CGRect(x: lockCX - innerShackleW/2, y: lockCY - innerShackleH + 12, width: innerShackleW, height: innerShackleH)
+    // Cut out inner of shackle — larger
+    let innerShackleW: CGFloat = 38
+    let innerShackleH: CGFloat = 34
+    let innerShackleRect = CGRect(x: lockCX - innerShackleW/2, y: lockCY - innerShackleH + 16, width: innerShackleW, height: innerShackleH)
     ctx.addEllipse(in: innerShackleRect)
     ctx.setFillColor(cgColor(r: 50, g: 110, b: 230))
     ctx.fillPath()
 
-    // Lock keyhole
-    let keyholeY = lockCY + 16
-    ctx.addEllipse(in: CGRect(x: lockCX - 7, y: keyholeY - 12, width: 14, height: 14))
+    // Lock keyhole — larger
+    let keyholeY = lockCY + 22
+    ctx.addEllipse(in: CGRect(x: lockCX - 10, y: keyholeY - 16, width: 20, height: 20))
     ctx.setFillColor(cgColor(r: 30, g: 80, b: 200))
     ctx.fillPath()
 
