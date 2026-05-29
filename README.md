@@ -16,6 +16,14 @@ A native macOS TOTP authenticator app. Lives in the menu bar for quick access, w
   - Manual entry
 - **Export** — JSON export with QR code generation per account
 
+## Download
+
+Download the latest release from [GitHub Releases](https://github.com/muxuan1978/MFA-For-macOS/releases/latest).
+
+1. Download `MFA.dmg`
+2. Open the DMG and drag **MFA** to the **Applications** folder
+3. Launch MFA from Applications (first launch: right-click → Open)
+
 ## Requirements
 
 - macOS 13.0 (Ventura) or later
