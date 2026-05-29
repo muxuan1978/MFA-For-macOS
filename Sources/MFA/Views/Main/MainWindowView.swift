@@ -12,9 +12,10 @@ struct MainWindowView: View {
         VStack(spacing: 0) {
             // Toolbar
             HStack(spacing: 12) {
-                Image(systemName: "lock.shield.fill")
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundStyle(Color.accentColor)
+                Image("MenuBarIcon")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 18, height: 18)
                 Text("MFA Authenticator")
                     .font(.system(size: 15, weight: .bold))
 
@@ -68,7 +69,7 @@ struct MainWindowView: View {
             .padding(.horizontal, 20)
             .padding(.top, 12)
 
-            // Card grid
+            // Account list
             if viewModel.filteredAccounts.isEmpty {
                 VStack(spacing: 12) {
                     Spacer()
@@ -114,6 +115,11 @@ struct MainWindowView: View {
         }
         .onAppear {
             Task { await viewModel.loadAccounts() }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                if let window = NSApp.keyWindow {
+                    window.level = .floating
+                }
+            }
         }
     }
 

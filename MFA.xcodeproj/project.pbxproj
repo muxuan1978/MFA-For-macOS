@@ -33,6 +33,7 @@
 		C26B96E77EB4C4BB8BCAE997 /* TOTPEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565BE1174CEA566CA853D2DA /* TOTPEngineTests.swift */; };
 		C372C62AC091F2F52346C685 /* MFAApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07373E6842DA2942A8A3DA6E /* MFAApp.swift */; };
 		CA58FCC8B82C95968369650D /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31AAA00065A49043CD83FF41 /* MenuBarView.swift */; };
+		E34E76DA54309C4BC263537C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EA0CB5C2C533209D10DDFC0 /* SettingsView.swift */; };
 		E7D18367787473FA37B71D8E /* AccountListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982E566EE0BC419B998A0E7D /* AccountListView.swift */; };
 		E876280EC2495FE8DD8B9251 /* AccountStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C226BD0BB7A0F57EA8F9568 /* AccountStore.swift */; };
 		E879B13C8B531D0EC3EAD47C /* CountdownArc.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BE90CF6080F804A361E15B /* CountdownArc.swift */; };
@@ -58,6 +59,7 @@
 		1083D055AD9A2717E2E3EA33 /* OTPAuthParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTPAuthParser.swift; sourceTree = "<group>"; };
 		21FD83E706DAD3BFB29A202E /* AccountStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountStoreTests.swift; sourceTree = "<group>"; };
 		2651D81CF77FE1F96760CF09 /* CodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeViewModel.swift; sourceTree = "<group>"; };
+		2EA0CB5C2C533209D10DDFC0 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		30FD3E17B07042CE462F4E01 /* TOTPAlgorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TOTPAlgorithm.swift; sourceTree = "<group>"; };
 		31AAA00065A49043CD83FF41 /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
 		3498B42824A656CD14D3712E /* ImageImportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageImportService.swift; sourceTree = "<group>"; };
@@ -124,6 +126,14 @@
 			);
 			sourceTree = "<group>";
 		};
+		4244968FC000F8BCB7EE5CB7 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				2EA0CB5C2C533209D10DDFC0 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		5274E91537EDEF6E19D77119 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -131,6 +141,7 @@
 				9442700FF265AF9413E5F6A4 /* Main */,
 				C23FD9A62262CD65539D524A /* MenuBar */,
 				5A131F519456CCBC057A1A7F /* Scanner */,
+				4244968FC000F8BCB7EE5CB7 /* Settings */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -377,6 +388,7 @@
 				610780BBE55D14572A0DD6AC /* OTPAuthParser.swift in Sources */,
 				BB8602BDF4041EF37CE56F17 /* QRScanService.swift in Sources */,
 				70FAE569E3671659B46DE8CF /* QRScanView.swift in Sources */,
+				E34E76DA54309C4BC263537C /* SettingsView.swift in Sources */,
 				30A47AAA21A9944FD9441311 /* TOTPAlgorithm.swift in Sources */,
 				A8F9D70755A0288DFAD34026 /* TOTPEngine.swift in Sources */,
 			);

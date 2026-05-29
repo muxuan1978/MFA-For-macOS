@@ -223,8 +223,11 @@ struct ImportView: View {
                 errorMessage = error.localizedDescription
                 return
             }
-            viewModel.showingImportResult = true
+            scanner.stopScanning()
             dismiss()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                viewModel.showingImportResult = true
+            }
         }
     }
 }

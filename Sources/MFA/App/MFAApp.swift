@@ -13,7 +13,7 @@ struct MFAApp: App {
     }
 
     var body: some Scene {
-        MenuBarExtra("MFA", systemImage: "lock.shield") {
+        MenuBarExtra("MFA", image: "MenuBarIcon") {
             MenuBarView(viewModel: accountsVM)
         }
         .menuBarExtraStyle(.window)
@@ -33,5 +33,9 @@ struct MFAApp: App {
         .windowStyle(.titleBar)
         .windowToolbarStyle(.unified(showsTitle: true))
         .defaultSize(width: 780, height: 560)
+
+        Settings {
+            SettingsView()
+        }
     }
 }

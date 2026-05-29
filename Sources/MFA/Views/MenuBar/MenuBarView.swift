@@ -18,14 +18,15 @@ struct MenuBarView: View {
             // Header with search
             VStack(spacing: 8) {
                 HStack {
-                    Image(systemName: "lock.shield.fill")
-                        .font(.system(size: 14, weight: .semibold))
-                        .foregroundStyle(Color.accentColor)
+                    Image("MenuBarIcon")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 16, height: 16)
                     Text("MFA Authenticator")
                         .font(.system(size: 13, weight: .semibold))
                     Spacer()
                     Button {
-                        openWindow(id: "main")
+                        NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
                     } label: {
                         Image(systemName: "gearshape.fill")
                             .font(.system(size: 12))
