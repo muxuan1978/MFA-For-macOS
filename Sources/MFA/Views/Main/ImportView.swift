@@ -10,7 +10,7 @@ struct ImportView: View {
         case text = "Text"
     }
 
-    @State private var selectedTab: ImportTab = .camera
+    @State private var selectedTab: ImportTab = .text
     @StateObject private var scanner = QRScanService()
     @State private var textInput = ""
     @State private var errorMessage: String?
