@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>MFA 图标方案选择</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+  background: #1a1a2e;
+  color: #e0e0e0;
+  padding: 40px;
+}
+h1 {
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 12px;
+  color: #fff;
+}
+.subtitle {
+  text-align: center;
+  color: #888;
+  margin-bottom: 48px;
+  font-size: 15px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.card {
+  background: #252540;
+  border-radius: 16px;
+  padding: 28px 20px 20px;
+  text-align: center;
+  border: 2px solid transparent;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.card:hover {
+  border-color: #5588ff;
+  transform: translateY(-4px);
+}
+.label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #aac;
+}
+.preview-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 16px;
+  height: 180px;
+}
+.preview-row img {
+  image-rendering: -webkit-optimize-contrast;
+}
+.size-label {
+  font-size: 11px;
+  color: #666;
+  margin-top: 4px;
+}
+.desc {
+  font-size: 13px;
+  color: #999;
+  line-height: 1.5;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #333;
+}
+.row-label {
+  font-size: 13px;
+  color: #667;
+  margin-top: 32px;
+  text-align: center;
+  font-size: 15px;
+  color: #889;
+  margin-bottom: 20px;
+}
+</style>
+</head>
+<body>
+
+<h1>MFA App Icon 方案</h1>
+<p class="subtitle">选择一个方案，左侧为 512px 细节，右侧为 128px 实际大小</p>
+
+<div class="grid">
+
+  <div class="card">
+    <div class="label">A. 盾牌 + 锁 + 数字</div>
+    <div class="preview-row">
+      <div>
+        <img src="option_A_shield_lock_digits_512.png" width="160" />
+        <div class="size-label">512px</div>
+      </div>
+      <div>
+        <img src="option_A_shield_lock_digits_128.png" width="80" />
+        <div class="size-label">128px</div>
+      </div>
+    </div>
+    <div class="desc">蓝色渐变盾牌，内含锁头和 TOTP 数字。元素较多，小尺寸下数字偏密。</div>
+  </div>
+
+  <div class="card">
+    <div class="label">B. 盾牌 + 钥匙</div>
+    <div class="preview-row">
+      <div>
+        <img src="option_B_shield_key_512.png" width="160" />
+        <div class="size-label">512px</div>
+      </div>
+      <div>
+        <img src="option_B_shield_key_128.png" width="80" />
+        <div class="size-label">128px</div>
+      </div>
+    </div>
+    <div class="desc">蓝色盾牌配大号钥匙图标，轮廓清晰，小尺寸辨识度高。</div>
+  </div>
+
+  <div class="card">
+    <div class="label">C. MFA 文字</div>
+    <div class="preview-row">
+      <div>
+        <img src="option_C_mfa_text_512.png" width="160" />
+        <div class="size-label">512px</div>
+      </div>
+      <div>
+        <img src="option_C_mfa_text_128.png" width="80" />
+        <div class="size-label">128px</div>
+      </div>
+    </div>
+    <div class="desc">深蓝渐变底 + "MFA" 大字 + 2FA 副标题，最直观。</div>
+  </div>
+
+  <div class="card">
+    <div class="label">D. 盾牌 + 勾号（绿色）</div>
+    <div class="preview-row">
+      <div>
+        <img src="option_D_shield_check_green_512.png" width="160" />
+        <div class="size-label">512px</div>
+      </div>
+      <div>
+        <img src="option_D_shield_check_green_128.png" width="80" />
+        <div class="size-label">128px</div>
+      </div>
+    </div>
+    <div class="desc">绿色渐变盾牌 + 白色勾号，安全/验证信号感强，辨识度最高。</div>
+  </div>
+
+  <div class="card">
+    <div class="label">E. 盾牌 + 数字（紫色）</div>
+    <div class="preview-row">
+      <div>
+        <img src="option_E_shield_digits_purple_512.png" width="160" />
+        <div class="size-label">512px</div>
+      </div>
+      <div>
+        <img src="option_E_shield_digits_purple_128.png" width="80" />
+        <div class="size-label">128px</div>
+      </div>
+    </div>
+    <div class="desc">紫色渐变盾牌 + 大号 "648" 数字 + 倒计时弧线，TOTP 特征最明显。</div>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -13,7 +13,7 @@ struct MFAApp: App {
     }
 
     var body: some Scene {
-        MenuBarExtra("MFA", image: "MenuBarIcon") {
+        MenuBarExtra("", image: "MenuBarIcon") {
             MenuBarView(viewModel: accountsVM)
         }
         .menuBarExtraStyle(.window)
