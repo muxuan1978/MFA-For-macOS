@@ -7,6 +7,7 @@ struct ImportView: View {
     enum ImportTab: String, CaseIterable {
         case camera = "Camera"
         case image = "Image"
+        case screen = "Screen"
         case text = "Text"
     }
 
@@ -38,6 +39,8 @@ struct ImportView: View {
                     cameraTab
                 case .image:
                     imageTab
+                case .screen:
+                    screenTab
                 case .text:
                     textTab
                 }
@@ -145,8 +148,39 @@ struct ImportView: View {
         }
     }
 
-    // MARK: - Text Tab
+    // MARK: - Screen Tab
 
+    private var screenTab: some View {
+        VStack(spacing: 16) {
+            Spacer()
+
+            Image(systemName: "rectangle.dashed")
+                .font(.system(size: 48))
+                .foregroundStyle(.secondary)
+
+            Text("Capture a QR code from the screen")
+                .foregroundStyle(.secondary)
+
+            Button("Select Region on Screen") {
+                captureFromScreen()
+            }
+            .buttonStyle(.borderedProminent)
+            .controlSize(.large)
+
+            Text("Drag to select the area showing a QR code. It is decoded directly — no need to save the image first.")
+                .font(.caption)
+                .foregroundStyle(.tertiary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 24)
+
+            Spacer()
+        }
+        .onAppear {
+            scanner.stopScanning()
+        }
+    }
+
+    // MARK: - Text Tab
     private var textTab: some View {
         VStack(spacing: 12) {
             Text("Paste an otpauth URI:")
@@ -198,6 +232,14 @@ struct ImportView: View {
             importFromURI(payload)
         } else {
             errorMessage = "No QR code found in image"
+        }
+    }
+
+    private func captureFromScreen() {
+        if let payload = ScreenCaptureService.captureRegionAndDetect() {
+            importFromURI(payload)
+        } else {
+            errorMessage = "No QR code found in the selected area"
         }
     }
 
