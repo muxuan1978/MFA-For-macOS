@@ -1,3 +1,4 @@
+import AppKit
 import SwiftUI
 
 struct MainWindowView: View {
@@ -7,6 +8,9 @@ struct MainWindowView: View {
         GridItem(.flexible(), spacing: 16),
         GridItem(.flexible(), spacing: 16),
     ]
+
+    @State private var hostWindow: NSWindow?
+    @State private var pinOnTop = true
 
     var body: some View {
         VStack(spacing: 0) {
@@ -47,6 +51,17 @@ struct MainWindowView: View {
                 }
                 .buttonStyle(.bordered)
                 .controlSize(.small)
+
+                Button {
+                    pinOnTop.toggle()
+                } label: {
+                    Image(systemName: pinOnTop ? "pin.fill" : "pin")
+                        .font(.system(size: 12))
+                        .foregroundStyle(pinOnTop ? Color.accentColor : Color.secondary)
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+                .help(pinOnTop ? "Keep on top: on" : "Keep on top: off")
             }
             .padding(.horizontal, 20)
             .padding(.vertical, 14)
@@ -102,6 +117,10 @@ struct MainWindowView: View {
             }
         }
         .frame(minWidth: 680, minHeight: 500)
+        .background(WindowAccessor { window in
+            hostWindow = window
+            applyPinning()
+        })
         .sheet(isPresented: $viewModel.showingAddSheet) {
             AccountEditView(viewModel: viewModel)
         }
@@ -115,11 +134,18 @@ struct MainWindowView: View {
         }
         .onAppear {
             Task { await viewModel.loadAccounts() }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                if let window = NSApp.keyWindow {
-                    window.level = .floating
-                }
-            }
+        }
+        .onChange(of: pinOnTop) { _ in applyPinning() }
+    }
+
+    private func applyPinning() {
+        guard let hostWindow else { return }
+        if pinOnTop {
+            hostWindow.level = .floating
+            hostWindow.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
+        } else {
+            hostWindow.level = .normal
+            hostWindow.collectionBehavior = []
         }
     }
 
