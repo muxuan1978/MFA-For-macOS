@@ -7,10 +7,12 @@ A native macOS TOTP authenticator app. Lives in the menu bar for quick access, w
 - **TOTP Code Generation** — RFC 6238 compliant, supports SHA-1/SHA-256/SHA-512, 6 or 8 digit codes, custom periods
 - **Menu Bar Quick Access** — popover with live-updating codes, click to copy, countdown timer
 - **Account Management** — card grid layout with search, add, edit, delete, and drag reorder
+ - **Always-on-top Manager** — management window stays above other apps (toggle via the pin button)
 - **Encrypted Storage** — AES-256-GCM encryption for secrets, encryption key stored in macOS Keychain
 - **Multiple Import Methods**
   - Camera QR scanning (Vision framework)
   - Import from image files
+  - Screen region capture (drag-select a QR visible on screen; decoded directly, no save-then-open)
   - Paste `otpauth://` URIs
   - Google Authenticator migration (`otpauth-migration://offline?data=...`)
   - Manual entry
