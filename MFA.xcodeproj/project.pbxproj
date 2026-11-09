@@ -20,12 +20,14 @@
 		518A7C2DC1FAE9E317A725A9 /* AccountsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631AD5A9A855E03AEE565FE9 /* AccountsViewModel.swift */; };
 		540CA7CC29D8AE9779DAA939 /* AccountDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9970DEB3F5B527B293B4A0DF /* AccountDetailView.swift */; };
 		5C287ADA802DCCFD107AD283 /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4401747ECAFB68BFBBAA9DA /* KeychainService.swift */; };
+		5C8AD8A3D1DAFD97513EDCDB /* WindowAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA752AFD3118129B2AA9AC12 /* WindowAccessor.swift */; };
 		610780BBE55D14572A0DD6AC /* OTPAuthParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1083D055AD9A2717E2E3EA33 /* OTPAuthParser.swift */; };
 		673AF2488C619A53E5348EE7 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 6F05B9285D02BA8F19F52EA1 /* GRDB */; };
 		70FAE569E3671659B46DE8CF /* QRScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3E908D49FCB3301EA6EB9B /* QRScanView.swift */; };
 		7FCE72F79FC15A75D8D7A785 /* Base32.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6D1EFABD7544216947EF1D /* Base32.swift */; };
 		9ECBB8F1BAD358663642328C /* GoogleAuthParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F4AC12BDE2136551973A2A /* GoogleAuthParser.swift */; };
 		9F079F31B782423802D998EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F0D2322C331FE8D20622A315 /* Assets.xcassets */; };
+		A21D2EF3D5CFA1A5B5C971FE /* ScreenCaptureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A87FB3D1AC01FB51104636 /* ScreenCaptureService.swift */; };
 		A8F9D70755A0288DFAD34026 /* TOTPEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76395A2E03511486BCF40FF3 /* TOTPEngine.swift */; };
 		B09E9A3D59CA8E59B2AD2574 /* CodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2651D81CF77FE1F96760CF09 /* CodeViewModel.swift */; };
 		B599F2030098F6067D5495D6 /* AccountStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FD83E706DAD3BFB29A202E /* AccountStoreTests.swift */; };
@@ -38,6 +40,7 @@
 		E876280EC2495FE8DD8B9251 /* AccountStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C226BD0BB7A0F57EA8F9568 /* AccountStore.swift */; };
 		E879B13C8B531D0EC3EAD47C /* CountdownArc.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BE90CF6080F804A361E15B /* CountdownArc.swift */; };
 		EAE957097AE76C294D04CA87 /* GoogleAuthParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8FDB1C58C56BD78310BBB73 /* GoogleAuthParserTests.swift */; };
+		F0CD7FDA5A9793AE873C1B2F /* AccountsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDFAB91F297D70A5F74CB56 /* AccountsViewModelTests.swift */; };
 		F9E4D83E95BCF1D91B6468B8 /* ExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92DE664544EA4C34EA4B0377 /* ExportService.swift */; };
 		FC3A574072CAB1A02E8EE41F /* CodeRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70DF48F158BD44002CE87681 /* CodeRowView.swift */; };
 		FE53B86EB1452F3A4DB8B0C8 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10400CBBEA1E8426FFE3F3C9 /* Account.swift */; };
@@ -55,6 +58,7 @@
 
 /* Begin PBXFileReference section */
 		07373E6842DA2942A8A3DA6E /* MFAApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MFAApp.swift; sourceTree = "<group>"; };
+		07A87FB3D1AC01FB51104636 /* ScreenCaptureService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenCaptureService.swift; sourceTree = "<group>"; };
 		10400CBBEA1E8426FFE3F3C9 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		1083D055AD9A2717E2E3EA33 /* OTPAuthParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTPAuthParser.swift; sourceTree = "<group>"; };
 		21FD83E706DAD3BFB29A202E /* AccountStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountStoreTests.swift; sourceTree = "<group>"; };
@@ -79,6 +83,7 @@
 		982E566EE0BC419B998A0E7D /* AccountListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListView.swift; sourceTree = "<group>"; };
 		9970DEB3F5B527B293B4A0DF /* AccountDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailView.swift; sourceTree = "<group>"; };
 		A084D9D9E49549EFBDDE2593 /* MFATests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MFATests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA752AFD3118129B2AA9AC12 /* WindowAccessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowAccessor.swift; sourceTree = "<group>"; };
 		C0F4AC12BDE2136551973A2A /* GoogleAuthParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleAuthParser.swift; sourceTree = "<group>"; };
 		C8FDB1C58C56BD78310BBB73 /* GoogleAuthParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleAuthParserTests.swift; sourceTree = "<group>"; };
 		D1BE90CF6080F804A361E15B /* CountdownArc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownArc.swift; sourceTree = "<group>"; };
@@ -89,6 +94,7 @@
 		F08771CB4589FBADEE351DFF /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		F0D2322C331FE8D20622A315 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F641E2803D96CE4B17BA8ACD /* AccountEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountEditView.swift; sourceTree = "<group>"; };
+		FBDFAB91F297D70A5F74CB56 /* AccountsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsViewModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,6 +182,7 @@
 			children = (
 				70DF48F158BD44002CE87681 /* CodeRowView.swift */,
 				D1BE90CF6080F804A361E15B /* CountdownArc.swift */,
+				AA752AFD3118129B2AA9AC12 /* WindowAccessor.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -184,6 +191,7 @@
 			isa = PBXGroup;
 			children = (
 				21FD83E706DAD3BFB29A202E /* AccountStoreTests.swift */,
+				FBDFAB91F297D70A5F74CB56 /* AccountsViewModelTests.swift */,
 				48D2D4392E21F92E016F630E /* CryptoServiceTests.swift */,
 				C8FDB1C58C56BD78310BBB73 /* GoogleAuthParserTests.swift */,
 				8F2C688D8F8093044A9F3C0E /* OTPAuthParserTests.swift */,
@@ -244,6 +252,7 @@
 				D4401747ECAFB68BFBBAA9DA /* KeychainService.swift */,
 				1083D055AD9A2717E2E3EA33 /* OTPAuthParser.swift */,
 				9477433A77B445F280BF581F /* QRScanService.swift */,
+				07A87FB3D1AC01FB51104636 /* ScreenCaptureService.swift */,
 				76395A2E03511486BCF40FF3 /* TOTPEngine.swift */,
 			);
 			path = Services;
@@ -353,6 +362,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B599F2030098F6067D5495D6 /* AccountStoreTests.swift in Sources */,
+				F0CD7FDA5A9793AE873C1B2F /* AccountsViewModelTests.swift in Sources */,
 				3C8030D47663D9442973DC00 /* CryptoServiceTests.swift in Sources */,
 				EAE957097AE76C294D04CA87 /* GoogleAuthParserTests.swift in Sources */,
 				230538EA9AD24C55AA99ACA1 /* OTPAuthParserTests.swift in Sources */,
@@ -388,9 +398,11 @@
 				610780BBE55D14572A0DD6AC /* OTPAuthParser.swift in Sources */,
 				BB8602BDF4041EF37CE56F17 /* QRScanService.swift in Sources */,
 				70FAE569E3671659B46DE8CF /* QRScanView.swift in Sources */,
+				A21D2EF3D5CFA1A5B5C971FE /* ScreenCaptureService.swift in Sources */,
 				E34E76DA54309C4BC263537C /* SettingsView.swift in Sources */,
 				30A47AAA21A9944FD9441311 /* TOTPAlgorithm.swift in Sources */,
 				A8F9D70755A0288DFAD34026 /* TOTPEngine.swift in Sources */,
+				5C8AD8A3D1DAFD97513EDCDB /* WindowAccessor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
