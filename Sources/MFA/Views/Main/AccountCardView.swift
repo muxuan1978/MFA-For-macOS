@@ -5,11 +5,16 @@ struct AccountCardView: View {
     @ObservedObject var viewModel: AccountsViewModel
     @State private var copied = false
     @State private var showDeleteConfirmation = false
+    @State private var isTargeted = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             // Header: avatar + name + delete button
             HStack(spacing: 10) {
+                Image(systemName: "line.3.horizontal")
+                    .font(.system(size: 12))
+                    .foregroundStyle(.tertiary)
+                    .help("Drag to reorder")
                 Text(String(account.issuer.prefix(1)).uppercased())
                     .font(.system(size: 16, weight: .bold, design: .rounded))
                     .foregroundStyle(.white)
@@ -98,8 +103,29 @@ struct AccountCardView: View {
         )
         .overlay(
             RoundedRectangle(cornerRadius: 12)
-                .strokeBorder(Color.gray.opacity(0.12), lineWidth: 1)
+                .strokeBorder(isTargeted ? Color.accentColor : Color.gray.opacity(0.12),
+                              lineWidth: isTargeted ? 2 : 1)
         )
+        .draggable(account.id.uuidString) {
+            HStack(spacing: 6) {
+                Image(systemName: "key.fill")
+                    .font(.system(size: 12))
+                Text("\(account.issuer) - \(account.accountName)")
+                    .font(.system(size: 12, weight: .medium))
+                    .lineLimit(1)
+            }
+            .padding(.horizontal, 10)
+            .padding(.vertical, 6)
+            .background(RoundedRectangle(cornerRadius: 8).fill(Color(nsColor: .windowBackgroundColor)))
+        }
+        .dropDestination(for: String.self) { items, _ in
+            guard let draggedID = items.first.flatMap({ UUID(uuidString: $0) }),
+                  draggedID != account.id else { return false }
+            Task { try? await viewModel.moveAccount(draggedID, before: account.id) }
+            return true
+        } isTargeted: { targeted in
+            isTargeted = targeted
+        }
         .alert("Delete Account?", isPresented: $showDeleteConfirmation) {
             Button("Delete", role: .destructive) {
                 Task { try? await viewModel.deleteAccount(account) }

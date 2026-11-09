@@ -101,6 +101,18 @@ final class AccountsViewModel: ObservableObject {
         await loadAccounts()
     }
 
+    func moveAccount(_ movedID: UUID, before targetID: UUID) async throws {
+        var ids = accounts.map(\.id)
+        guard let fromIndex = ids.firstIndex(of: movedID), movedID != targetID else { return }
+        ids.remove(at: fromIndex)
+        if let targetIndex = ids.firstIndex(of: targetID) {
+            ids.insert(movedID, at: targetIndex)
+        } else {
+            ids.append(movedID)
+        }
+        try await reorderAccounts(ids)
+    }
+
     private func rebuildCodeViewModels() {
         var newViewModels: [UUID: CodeViewModel] = [:]
         for account in accounts {
