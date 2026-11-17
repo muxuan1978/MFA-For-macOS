@@ -5,10 +5,12 @@ A native macOS TOTP authenticator app. Lives in the menu bar for quick access, w
 ## Features
 
 - **TOTP Code Generation** — RFC 6238 compliant, supports SHA-1/SHA-256/SHA-512, 6 or 8 digit codes, custom periods
-- **Menu Bar Quick Access** — popover with live-updating codes, click to copy, countdown timer
+- **Menu Bar Quick Access** — aligned code and countdown columns, click to copy, and a draggable bottom handle to resize the popover; height is remembered across launches
 - **Global Quick Fill** — open a searchable account picker with a configurable keyboard shortcut, then copy the current code or paste it into the previously active app
 - **Quick Fill Settings** — choose the shortcut, control automatic pasting, and request the macOS keyboard control permission needed to send the paste keystroke
-- **Account Management** — card grid layout with search, add, edit, delete, and drag reorder
+- **Account Management** — compact cards with click-to-copy feedback, search, add, edit, delete, and drag reorder; secondary controls become more prominent on hover or keyboard focus
+- **Consistent Account Styling** — shared rounded avatars with stable issuer colors; countdowns turn orange at 10 seconds and red at 5 seconds remaining
+- **Search and Accessibility** — clear-search controls, helpful empty states, keyboard focus indicators, and spoken code/countdown labels
 - **Always-on-top Manager** — management window stays above other apps (toggle via the pin button)
 - **Encrypted Storage** — AES-256-GCM encryption for secrets, encryption key stored in macOS Keychain
 - **Multiple Import Methods**

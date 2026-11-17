@@ -3,7 +3,15 @@ import SwiftUI
 struct MenuBarView: View {
     @ObservedObject var viewModel: AccountsViewModel
     @Environment(\.openWindow) private var openWindow
+    @AppStorage("menuBarWindowHeight") private var popupHeight = 500.0
     @State private var searchText = ""
+    @State private var resizeStartHeight: Double?
+    @State private var hostingScreenHeight: Double?
+
+    private var maximumPopupHeight: Double {
+        let visibleHeight = hostingScreenHeight ?? Double(NSScreen.main?.visibleFrame.height ?? 880)
+        return min(780, max(320, visibleHeight - 100))
+    }
 
     private var filteredAccounts: [Account] {
         guard !searchText.isEmpty else { return viewModel.accounts }
@@ -53,6 +61,16 @@ struct MenuBarView: View {
                     TextField("Search accounts...", text: $searchText)
                         .textFieldStyle(.plain)
                         .font(.system(size: 12))
+                    if !searchText.isEmpty {
+                        Button {
+                            searchText = ""
+                        } label: {
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundStyle(.tertiary)
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel("Clear search")
+                    }
                 }
                 .padding(.horizontal, 8)
                 .padding(.vertical, 6)
@@ -86,6 +104,23 @@ struct MenuBarView: View {
                     Spacer()
                 }
                 .frame(maxWidth: .infinity)
+                .frame(maxHeight: .infinity)
+            } else if filteredAccounts.isEmpty {
+                VStack(spacing: 8) {
+                    Image(systemName: "magnifyingglass")
+                        .font(.system(size: 22, weight: .light))
+                        .foregroundStyle(.tertiary)
+                    Text("No accounts found")
+                        .font(.system(size: 13, weight: .medium))
+                    Text("Try another search.")
+                        .font(.system(size: 11))
+                        .foregroundStyle(.secondary)
+                    Button("Clear Search") { searchText = "" }
+                        .buttonStyle(.link)
+                        .font(.system(size: 11))
+                        .padding(.top, 2)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 ScrollView {
                     LazyVStack(spacing: 4) {
@@ -98,7 +133,7 @@ struct MenuBarView: View {
                     .padding(.horizontal, 8)
                     .padding(.vertical, 6)
                 }
-                .frame(minHeight: 420)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
 
             Divider()
@@ -131,10 +166,53 @@ struct MenuBarView: View {
             }
             .padding(.horizontal, 14)
             .padding(.vertical, 8)
+
+            resizeHandle
         }
-        .frame(width: 460)
+        .frame(width: 460, height: popupHeight)
+        .background(WindowAccessor { window in
+            guard let visibleHeight = window.screen?.visibleFrame.height else { return }
+            DispatchQueue.main.async {
+                hostingScreenHeight = Double(visibleHeight)
+                popupHeight = clampedHeight(popupHeight)
+            }
+        })
         .onAppear {
+            popupHeight = clampedHeight(popupHeight)
             Task { await viewModel.loadAccounts() }
         }
+    }
+
+    private var resizeHandle: some View {
+        Capsule()
+            .fill(Color.secondary.opacity(0.35))
+            .frame(width: 36, height: 4)
+            .frame(maxWidth: .infinity)
+            .frame(height: 14)
+            .contentShape(Rectangle())
+            .gesture(
+                DragGesture(minimumDistance: 1)
+                    .onChanged { value in
+                        if resizeStartHeight == nil { resizeStartHeight = popupHeight }
+                        guard let resizeStartHeight else { return }
+                        popupHeight = clampedHeight(resizeStartHeight + Double(value.translation.height))
+                    }
+                    .onEnded { _ in resizeStartHeight = nil }
+            )
+            .accessibilityElement()
+            .accessibilityLabel("Resize menu bar window")
+            .accessibilityValue("\(Int(popupHeight)) points")
+            .accessibilityAdjustableAction { direction in
+                switch direction {
+                case .increment: popupHeight = clampedHeight(popupHeight + 40)
+                case .decrement: popupHeight = clampedHeight(popupHeight - 40)
+                @unknown default: break
+                }
+            }
+            .help("Drag to adjust window height")
+    }
+
+    private func clampedHeight(_ height: Double) -> Double {
+        min(max(height, 320), maximumPopupHeight)
     }
 }

@@ -6,106 +6,104 @@ struct AccountCardView: View {
     @State private var copied = false
     @State private var showDeleteConfirmation = false
     @State private var isTargeted = false
+    @State private var isHovered = false
+    @FocusState private var focusedControl: Control?
+
+    private enum Control: Hashable {
+        case copy, delete
+    }
+
+    private var showsControls: Bool { isHovered || focusedControl != nil }
+
+    private var cardBackground: Color {
+        if copied { return Color.green.opacity(0.08) }
+        if isTargeted { return Color.accentColor.opacity(0.08) }
+        return Color(nsColor: .controlBackgroundColor)
+    }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            // Header: avatar + name + delete button
-            HStack(spacing: 10) {
-                Image(systemName: "line.3.horizontal")
-                    .font(.system(size: 12))
-                    .foregroundStyle(.tertiary)
-                    .help("Drag to reorder")
-                Text(String(account.issuer.prefix(1)).uppercased())
-                    .font(.system(size: 16, weight: .bold, design: .rounded))
-                    .foregroundStyle(.white)
-                    .frame(width: 34, height: 34)
-                    .background(colorForIssuer(account.issuer))
-                    .clipShape(Circle())
+        ZStack(alignment: .topTrailing) {
+            Button(action: copyCurrentCode) {
+                VStack(alignment: .leading, spacing: 10) {
+                    HStack(spacing: 10) {
+                        IssuerAvatar(issuer: account.issuer)
 
-                VStack(alignment: .leading, spacing: 1) {
-                    Text(account.issuer)
-                        .font(.system(size: 13, weight: .semibold))
-                        .lineLimit(1)
-                    Text(account.accountName)
-                        .font(.system(size: 11))
-                        .foregroundStyle(.secondary)
-                        .lineLimit(1)
+                        VStack(alignment: .leading, spacing: 3) {
+                            Text(account.issuer)
+                                .font(.system(size: 13, weight: .semibold))
+                                .lineLimit(1)
+                                .help(account.issuer)
+                            Text(account.accountName)
+                                .font(.system(size: 11))
+                                .foregroundStyle(.secondary)
+                                .lineLimit(1)
+                                .truncationMode(.middle)
+                                .help(account.accountName)
+                        }
+
+                        Spacer(minLength: 48)
+                    }
+
+                    if let codeVM = viewModel.codeViewModels[account.id] {
+                        AccountCardCodeView(viewModel: codeVM, copied: copied)
+                    }
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(14)
+                .contentShape(RoundedRectangle(cornerRadius: 12))
+                .accessibilityElement(children: .combine)
+            }
+            .buttonStyle(.plain)
+            .focused($focusedControl, equals: .copy)
+            .disabled(viewModel.codeViewModels[account.id] == nil)
+            .accessibilityValue(copied ? "Copied" : "")
+            .accessibilityHint("Copies the code to the clipboard")
+            .help(copied ? "Verification code copied" : "Click to copy verification code")
 
-                Spacer()
+            HStack(spacing: 8) {
+                Image(systemName: "line.3.horizontal")
+                    .font(.system(size: 10, weight: .medium))
+                    .foregroundStyle(.secondary)
+                    .opacity(showsControls ? 0.8 : 0.25)
+                    .help("Drag card to reorder")
+                    .accessibilityHidden(true)
+                    .allowsHitTesting(false)
 
                 Button {
                     showDeleteConfirmation = true
                 } label: {
                     Image(systemName: "trash")
                         .font(.system(size: 11))
-                        .foregroundStyle(.red.opacity(0.5))
+                        .foregroundStyle(showsControls ? Color.red : Color.secondary)
+                        .opacity(showsControls ? 0.85 : 0.4)
+                        .frame(width: 22, height: 26)
+                        .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
+                .focused($focusedControl, equals: .delete)
+                .help("Delete account")
+                .accessibilityLabel("Delete \(account.issuer) account")
             }
-
-            // TOTP Code
-            if let codeVM = viewModel.codeViewModels[account.id] {
-                HStack(alignment: .center) {
-                    Text(formatCode(codeVM.code))
-                        .font(.system(size: 28, weight: .bold, design: .monospaced))
-
-                    Spacer()
-
-                    ZStack {
-                        Circle()
-                            .stroke(Color.gray.opacity(0.2), lineWidth: 2.5)
-                        Circle()
-                            .trim(from: 0, to: codeVM.progress)
-                            .stroke(countdownColor(codeVM.progress), style: StrokeStyle(lineWidth: 2.5, lineCap: .round))
-                            .rotationEffect(.degrees(-90))
-                        Text("\(codeVM.remainingSeconds)")
-                            .font(.system(size: 10, weight: .semibold, design: .rounded))
-                            .foregroundStyle(countdownColor(codeVM.progress))
-                    }
-                    .frame(width: 30, height: 30)
-                }
-
-                // Copy button
-                Button {
-                    codeVM.copyCode()
-                    withAnimation(.easeInOut(duration: 0.15)) {
-                        copied = true
-                    }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                        withAnimation(.easeInOut(duration: 0.15)) {
-                            copied = false
-                        }
-                    }
-                } label: {
-                    HStack(spacing: 4) {
-                        Image(systemName: copied ? "checkmark.circle.fill" : "doc.on.doc")
-                            .font(.system(size: 10))
-                        Text(copied ? "Copied!" : "Copy")
-                            .font(.system(size: 11, weight: .medium))
-                    }
-                    .foregroundStyle(copied ? .green : .secondary)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 5)
-                    .background(
-                        RoundedRectangle(cornerRadius: 6)
-                            .fill(copied ? Color.green.opacity(0.1) : Color(nsColor: .controlBackgroundColor))
-                    )
-                }
-                .buttonStyle(.plain)
-            }
+            .padding(.top, 17)
+            .padding(.trailing, 10)
         }
-        .padding(14)
         .background(
             RoundedRectangle(cornerRadius: 12)
-                .fill(Color(nsColor: .windowBackgroundColor))
-                .shadow(color: .black.opacity(0.06), radius: 4, y: 2)
+                .fill(cardBackground)
+                .shadow(color: .black.opacity(0.025), radius: 3, y: 1)
         )
         .overlay(
             RoundedRectangle(cornerRadius: 12)
-                .strokeBorder(isTargeted ? Color.accentColor : Color.gray.opacity(0.12),
-                              lineWidth: isTargeted ? 2 : 1)
+                .strokeBorder(
+                    isTargeted || focusedControl == .copy
+                        ? Color.accentColor : Color.gray.opacity(showsControls ? 0.22 : 0.10),
+                    lineWidth: isTargeted || focusedControl == .copy ? 2 : 1
+                )
+                .allowsHitTesting(false)
         )
+        .animation(.easeOut(duration: 0.16), value: showsControls)
+        .animation(.easeOut(duration: 0.16), value: isTargeted)
+        .onHover { isHovered = $0 }
         .draggable(account.id.uuidString) {
             HStack(spacing: 6) {
                 Image(systemName: "key.fill")
@@ -136,32 +134,44 @@ struct AccountCardView: View {
         }
     }
 
-    private func formatCode(_ code: String) -> String {
-        let mid = code.index(code.startIndex, offsetBy: code.count / 2)
-        return String(code[..<mid]) + " " + String(code[mid...])
+    private func copyCurrentCode() {
+        guard let codeViewModel = viewModel.codeViewModels[account.id] else { return }
+        codeViewModel.copyCode()
+        withAnimation(.easeInOut(duration: 0.15)) {
+            copied = true
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            withAnimation(.easeInOut(duration: 0.15)) {
+                copied = false
+            }
+        }
     }
 
-    private func countdownColor(_ progress: Double) -> Color {
-        if progress > 0.5 { return .green }
-        if progress > 0.2 { return .orange }
-        return .red
+}
+
+private struct AccountCardCodeView: View {
+    @ObservedObject var viewModel: CodeViewModel
+    let copied: Bool
+
+    private var formattedCode: String {
+        let code = viewModel.code
+        let middle = code.index(code.startIndex, offsetBy: code.count / 2)
+        return String(code[..<middle]) + " " + String(code[middle...])
     }
 
-    private func colorForIssuer(_ issuer: String) -> Color {
-        let lower = issuer.lowercased()
-        if lower.contains("github") { return Color(red: 0.13, green: 0.15, blue: 0.18) }
-        if lower.contains("google") { return Color(red: 0.26, green: 0.52, blue: 0.96) }
-        if lower.contains("aliyun") { return Color(red: 1.0, green: 0.55, blue: 0.0) }
-        if lower.contains("amazon") { return Color(red: 1.0, green: 0.77, blue: 0.0) }
-        if lower.contains("microsoft") { return Color(red: 0.0, green: 0.48, blue: 0.85) }
-        if lower.contains("apple") { return Color(red: 0.35, green: 0.35, blue: 0.38) }
-        if lower.contains("jump") { return Color(red: 0.20, green: 0.60, blue: 0.86) }
-        if lower.contains("git") { return Color(red: 0.83, green: 0.33, blue: 0.12) }
-        let hash = issuer.hashValue
-        return Color(
-            red: Double((abs(hash) % 180) + 40) / 255.0,
-            green: Double((abs(hash >> 8) % 180) + 40) / 255.0,
-            blue: Double((abs(hash >> 16) % 180) + 40) / 255.0
-        )
+    var body: some View {
+        HStack(spacing: 10) {
+            Text(formattedCode)
+                .font(.system(size: 28, weight: .semibold, design: .monospaced))
+                .lineLimit(1)
+                .minimumScaleFactor(0.75)
+                .accessibilityLabel("Verification code, \(viewModel.code)")
+            Image(systemName: copied ? "checkmark.circle.fill" : "doc.on.doc")
+                .font(.system(size: 11, weight: .medium))
+                .foregroundStyle(copied ? Color.green : Color.secondary.opacity(0.5))
+                .accessibilityHidden(true)
+            Spacer(minLength: 0)
+            CodeCountdownView(remainingSeconds: viewModel.remainingSeconds, progress: viewModel.progress)
+        }
     }
 }

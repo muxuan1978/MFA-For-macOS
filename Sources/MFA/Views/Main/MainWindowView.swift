@@ -76,6 +76,16 @@ struct MainWindowView: View {
                 TextField("Search accounts...", text: $viewModel.searchQuery)
                     .textFieldStyle(.plain)
                     .font(.system(size: 13))
+                if !viewModel.searchQuery.isEmpty {
+                    Button {
+                        viewModel.searchQuery = ""
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundStyle(.tertiary)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("Clear search")
+                }
             }
             .padding(.horizontal, 10)
             .padding(.vertical, 7)
@@ -89,10 +99,15 @@ struct MainWindowView: View {
                 VStack(spacing: 12) {
                     Spacer()
                     Image(systemName: "key.fill")
-                        .font(.system(size: 36))
+                        .font(.system(size: 34, weight: .light))
                         .foregroundStyle(.quaternary)
-                    Text(viewModel.accounts.isEmpty ? "No accounts yet" : "No matching accounts")
-                        .font(.system(size: 14))
+                    Text(viewModel.accounts.isEmpty ? "Your authenticator is ready" : "No accounts found")
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundStyle(.primary)
+                    Text(viewModel.accounts.isEmpty
+                         ? "Add an account to see verification codes here."
+                         : "Try another service or account name.")
+                        .font(.system(size: 12))
                         .foregroundStyle(.secondary)
                     if viewModel.accounts.isEmpty {
                         Button {
@@ -101,6 +116,11 @@ struct MainWindowView: View {
                             Label("Add Account", systemImage: "plus.circle.fill")
                         }
                         .buttonStyle(.borderedProminent)
+                    } else {
+                        Button("Clear Search") {
+                            viewModel.searchQuery = ""
+                        }
+                        .buttonStyle(.bordered)
                     }
                     Spacer()
                 }

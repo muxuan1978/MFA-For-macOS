@@ -36,6 +36,8 @@
 		C26B96E77EB4C4BB8BCAE997 /* TOTPEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565BE1174CEA566CA853D2DA /* TOTPEngineTests.swift */; };
 		C372C62AC091F2F52346C685 /* MFAApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07373E6842DA2942A8A3DA6E /* MFAApp.swift */; };
 		CA58FCC8B82C95968369650D /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31AAA00065A49043CD83FF41 /* MenuBarView.swift */; };
+		CF7EFB1FD0817E680D5CF4E7 /* IssuerAvatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 190A03F7D3554FB617C2F1B8 /* IssuerAvatar.swift */; };
+		E1B1361A75999A85FAA5C107 /* CodeCountdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22725D3BBEE44550281117C /* CodeCountdownView.swift */; };
 		E34E76DA54309C4BC263537C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EA0CB5C2C533209D10DDFC0 /* SettingsView.swift */; };
 		E7D18367787473FA37B71D8E /* AccountListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982E566EE0BC419B998A0E7D /* AccountListView.swift */; };
 		E876280EC2495FE8DD8B9251 /* AccountStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C226BD0BB7A0F57EA8F9568 /* AccountStore.swift */; };
@@ -62,6 +64,7 @@
 		07A87FB3D1AC01FB51104636 /* ScreenCaptureService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenCaptureService.swift; sourceTree = "<group>"; };
 		10400CBBEA1E8426FFE3F3C9 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		1083D055AD9A2717E2E3EA33 /* OTPAuthParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTPAuthParser.swift; sourceTree = "<group>"; };
+		190A03F7D3554FB617C2F1B8 /* IssuerAvatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuerAvatar.swift; sourceTree = "<group>"; };
 		21FD83E706DAD3BFB29A202E /* AccountStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountStoreTests.swift; sourceTree = "<group>"; };
 		2651D81CF77FE1F96760CF09 /* CodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeViewModel.swift; sourceTree = "<group>"; };
 		2EA0CB5C2C533209D10DDFC0 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -85,6 +88,7 @@
 		9970DEB3F5B527B293B4A0DF /* AccountDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailView.swift; sourceTree = "<group>"; };
 		A084D9D9E49549EFBDDE2593 /* MFATests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MFATests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA752AFD3118129B2AA9AC12 /* WindowAccessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowAccessor.swift; sourceTree = "<group>"; };
+		B22725D3BBEE44550281117C /* CodeCountdownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeCountdownView.swift; sourceTree = "<group>"; };
 		C0F4AC12BDE2136551973A2A /* GoogleAuthParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleAuthParser.swift; sourceTree = "<group>"; };
 		C8FDB1C58C56BD78310BBB73 /* GoogleAuthParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleAuthParserTests.swift; sourceTree = "<group>"; };
 		D1BE90CF6080F804A361E15B /* CountdownArc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownArc.swift; sourceTree = "<group>"; };
@@ -182,8 +186,10 @@
 		9298D802E66E4FDF3B08A3F6 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				B22725D3BBEE44550281117C /* CodeCountdownView.swift */,
 				70DF48F158BD44002CE87681 /* CodeRowView.swift */,
 				D1BE90CF6080F804A361E15B /* CountdownArc.swift */,
+				190A03F7D3554FB617C2F1B8 /* IssuerAvatar.swift */,
 				AA752AFD3118129B2AA9AC12 /* WindowAccessor.swift */,
 			);
 			path = Components;
@@ -385,6 +391,7 @@
 				E876280EC2495FE8DD8B9251 /* AccountStore.swift in Sources */,
 				518A7C2DC1FAE9E317A725A9 /* AccountsViewModel.swift in Sources */,
 				7FCE72F79FC15A75D8D7A785 /* Base32.swift in Sources */,
+				E1B1361A75999A85FAA5C107 /* CodeCountdownView.swift in Sources */,
 				FC3A574072CAB1A02E8EE41F /* CodeRowView.swift in Sources */,
 				B09E9A3D59CA8E59B2AD2574 /* CodeViewModel.swift in Sources */,
 				E879B13C8B531D0EC3EAD47C /* CountdownArc.swift in Sources */,
@@ -394,6 +401,7 @@
 				9ECBB8F1BAD358663642328C /* GoogleAuthParser.swift in Sources */,
 				307E7697DFD88DE3E4A4F655 /* ImageImportService.swift in Sources */,
 				323762B537BAFFB22066F62E /* ImportView.swift in Sources */,
+				CF7EFB1FD0817E680D5CF4E7 /* IssuerAvatar.swift in Sources */,
 				5C287ADA802DCCFD107AD283 /* KeychainService.swift in Sources */,
 				C372C62AC091F2F52346C685 /* MFAApp.swift in Sources */,
 				1F1B911E83E5F5124E139F86 /* MainWindowView.swift in Sources */,
