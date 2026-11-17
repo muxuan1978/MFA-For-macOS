@@ -13,6 +13,16 @@ struct MenuBarView: View {
         }
     }
 
+    private func showSettingsWindow() {
+        openWindow(id: "settings")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+            NSApp.activate(ignoringOtherApps: true)
+            guard let window = NSApp.windows.first(where: { $0.title == "MFA - Settings" }) else { return }
+            window.makeKeyAndOrderFront(nil)
+            window.orderFrontRegardless()
+        }
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             // Header with search
@@ -26,7 +36,7 @@ struct MenuBarView: View {
                         .font(.system(size: 13, weight: .semibold))
                     Spacer()
                     Button {
-                        NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+                        showSettingsWindow()
                     } label: {
                         Image(systemName: "gearshape.fill")
                             .font(.system(size: 12))

@@ -16,6 +16,7 @@
 		30A47AAA21A9944FD9441311 /* TOTPAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD3E17B07042CE462F4E01 /* TOTPAlgorithm.swift */; };
 		323762B537BAFFB22066F62E /* ImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA09BFD602C93520F429C9E /* ImportView.swift */; };
 		3C8030D47663D9442973DC00 /* CryptoServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D2D4392E21F92E016F630E /* CryptoServiceTests.swift */; };
+		3E883B1937D607D1D7E42ABC /* QuickFillController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA17992320768EC5715FEDF3 /* QuickFillController.swift */; };
 		43741A530569EEE25919EC1B /* CryptoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696A9313058350867E1AFA32 /* CryptoService.swift */; };
 		518A7C2DC1FAE9E317A725A9 /* AccountsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631AD5A9A855E03AEE565FE9 /* AccountsViewModel.swift */; };
 		540CA7CC29D8AE9779DAA939 /* AccountDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9970DEB3F5B527B293B4A0DF /* AccountDetailView.swift */; };
@@ -89,6 +90,7 @@
 		D1BE90CF6080F804A361E15B /* CountdownArc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownArc.swift; sourceTree = "<group>"; };
 		D4401747ECAFB68BFBBAA9DA /* KeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
 		D5646A28D4BBC9B116973599 /* MainWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowView.swift; sourceTree = "<group>"; };
+		DA17992320768EC5715FEDF3 /* QuickFillController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickFillController.swift; sourceTree = "<group>"; };
 		DDA09BFD602C93520F429C9E /* ImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportView.swift; sourceTree = "<group>"; };
 		EB6D1EFABD7544216947EF1D /* Base32.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base32.swift; sourceTree = "<group>"; };
 		F08771CB4589FBADEE351DFF /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
@@ -252,6 +254,7 @@
 				D4401747ECAFB68BFBBAA9DA /* KeychainService.swift */,
 				1083D055AD9A2717E2E3EA33 /* OTPAuthParser.swift */,
 				9477433A77B445F280BF581F /* QRScanService.swift */,
+				DA17992320768EC5715FEDF3 /* QuickFillController.swift */,
 				07A87FB3D1AC01FB51104636 /* ScreenCaptureService.swift */,
 				76395A2E03511486BCF40FF3 /* TOTPEngine.swift */,
 			);
@@ -398,6 +401,7 @@
 				610780BBE55D14572A0DD6AC /* OTPAuthParser.swift in Sources */,
 				BB8602BDF4041EF37CE56F17 /* QRScanService.swift in Sources */,
 				70FAE569E3671659B46DE8CF /* QRScanView.swift in Sources */,
+				3E883B1937D607D1D7E42ABC /* QuickFillController.swift in Sources */,
 				A21D2EF3D5CFA1A5B5C971FE /* ScreenCaptureService.swift in Sources */,
 				E34E76DA54309C4BC263537C /* SettingsView.swift in Sources */,
 				30A47AAA21A9944FD9441311 /* TOTPAlgorithm.swift in Sources */,
