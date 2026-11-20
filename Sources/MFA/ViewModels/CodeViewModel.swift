@@ -43,6 +43,11 @@ final class CodeViewModel: ObservableObject {
         progress = Double(remainingSeconds) / Double(account.period)
     }
 
+    var formattedCode: String {
+        let mid = code.index(code.startIndex, offsetBy: code.count / 2)
+        return String(code[..<mid]) + " " + String(code[mid...])
+    }
+
     func copyCode() {
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString(code, forType: .string)

@@ -33,7 +33,7 @@ struct CodeRowView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-                Text(formatCode(viewModel.code))
+                Text(viewModel.formattedCode)
                     .font(.system(size: 22, weight: .semibold, design: .monospaced))
                     .lineLimit(1)
                     .minimumScaleFactor(0.8)
@@ -61,11 +61,6 @@ struct CodeRowView: View {
         .help(copied ? "Verification code copied" : "Click to copy verification code")
         .onHover { isHovered = $0 }
         .animation(.easeOut(duration: 0.15), value: isHovered)
-    }
-
-    private func formatCode(_ code: String) -> String {
-        let mid = code.index(code.startIndex, offsetBy: code.count / 2)
-        return String(code[..<mid]) + " " + String(code[mid...])
     }
 
     private func copyCode() {

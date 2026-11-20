@@ -97,21 +97,26 @@ final class QuickFillController: ObservableObject {
     }
 
     private func makePanel() -> NSPanel {
+        let frame = NSRect(x: 0, y: 0, width: 532, height: 440)
         let panel = NSPanel(
-            contentRect: NSRect(x: 0, y: 0, width: 420, height: 420),
+            contentRect: frame,
             styleMask: [.titled, .fullSizeContentView],
             backing: .buffered,
             defer: false
         )
         panel.title = "Quick Fill"
+        panel.titleVisibility = .hidden
         panel.titlebarAppearsTransparent = true
         panel.isMovableByWindowBackground = true
         panel.hidesOnDeactivate = true
         panel.level = .floating
         panel.isReleasedWhenClosed = false
-        panel.contentView = NSHostingView(rootView: QuickFillView(viewModel: viewModel) { [weak self] code in
+        let hostingView = NSHostingView(rootView: QuickFillView(viewModel: viewModel) { [weak self] code in
             self?.select(code: code)
         })
+        hostingView.sizingOptions = []
+        panel.contentView = hostingView
+        panel.setFrame(frame, display: false)
         self.panel = panel
         return panel
     }
@@ -174,174 +179,6 @@ enum QuickFillShortcut: Int, CaseIterable, Identifiable, Hashable {
         case .controlOptionSpace: return UInt32(controlKey | optionKey)
         case .commandShiftK: return UInt32(cmdKey | shiftKey)
         case .controlShiftM: return UInt32(controlKey | shiftKey)
-        }
-    }
-}
-
-private struct QuickFillView: View {
-    @ObservedObject var viewModel: AccountsViewModel
-    let onSelect: (String) -> Void
-    @State private var searchText = ""
-    @State private var selection = 0
-    @FocusState private var focused: Bool
-
-    private var codeRows: [CodeViewModel] {
-        viewModel.accounts.compactMap { account in
-            guard let code = viewModel.codeViewModels[account.id] else { return nil }
-            guard searchText.isEmpty || account.issuer.localizedCaseInsensitiveContains(searchText) || account.accountName.localizedCaseInsensitiveContains(searchText) else { return nil }
-            return code
-        }
-    }
-
-    var body: some View {
-        VStack(spacing: 0) {
-            TextField("Search accounts", text: $searchText)
-                .textFieldStyle(.roundedBorder)
-                .padding(14)
-                .focused($focused)
-                .onChange(of: searchText) { _ in selection = 0 }
-            Divider()
-            if codeRows.isEmpty {
-                VStack(spacing: 8) {
-                    Image(systemName: "key").font(.title2).foregroundStyle(.secondary)
-                    Text("No accounts found").foregroundStyle(.secondary)
-                }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else {
-                ScrollViewReader { proxy in
-                    ScrollView {
-                        LazyVStack(spacing: 0) {
-                            ForEach(Array(codeRows.enumerated()), id: \.element.account.id) { index, item in
-                                Button {
-                                    onSelect(item.code)
-                                } label: {
-                                    QuickFillCodeRow(viewModel: item)
-                                    .padding(.horizontal, 14)
-                                    .padding(.vertical, 11)
-                                    .contentShape(Rectangle())
-                                    .background(index == selection ? Color.accentColor.opacity(0.16) : .clear)
-                                }
-                                .buttonStyle(.plain)
-                                .id(index)
-                            }
-                        }
-                    }
-                    .onChange(of: selection) { newSelection in
-                        withAnimation { proxy.scrollTo(newSelection, anchor: .center) }
-                    }
-                }
-            }
-            Divider()
-            HStack {
-                Text("↑↓ Select")
-                Spacer()
-                Text("↵ Confirm")
-                Spacer()
-                Text("Esc Close")
-            }
-            .font(.caption)
-            .foregroundStyle(.secondary)
-            .padding(10)
-        }
-        .frame(width: 420, height: 420)
-        .focusable()
-        .focused($focused)
-        .background(QuickFillKeyboardMonitor(
-            selection: $selection,
-            count: codeRows.count,
-            onConfirm: confirmSelection,
-            onEscape: { NSApp.keyWindow?.orderOut(nil) }
-        ))
-        .onAppear { focused = true }
-    }
-
-    private func confirmSelection() {
-        guard codeRows.indices.contains(selection) else { return }
-        onSelect(codeRows[selection].code)
-    }
-}
-
-private struct QuickFillKeyboardMonitor: NSViewRepresentable {
-    @Binding var selection: Int
-    let count: Int
-    let onConfirm: () -> Void
-    let onEscape: () -> Void
-
-    func makeCoordinator() -> Coordinator { Coordinator() }
-
-    func makeNSView(context: Context) -> NSView { NSView(frame: .zero) }
-
-    func updateNSView(_ nsView: NSView, context: Context) {
-        context.coordinator.selection = $selection
-        context.coordinator.count = count
-        context.coordinator.onConfirm = onConfirm
-        context.coordinator.onEscape = onEscape
-        context.coordinator.installIfNeeded()
-    }
-
-    static func dismantleNSView(_ nsView: NSView, coordinator: Coordinator) {
-        coordinator.remove()
-    }
-
-    @MainActor
-    final class Coordinator {
-        var selection = Binding<Int>.constant(0)
-        var count = 0
-        var onConfirm: () -> Void = {}
-        var onEscape: () -> Void = {}
-        private var monitor: Any?
-
-        func installIfNeeded() {
-            guard monitor == nil else { return }
-            monitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { [weak self] event in
-                guard let self,
-                      let panel = NSApp.windows.first(where: { $0.title == "Quick Fill" }),
-                      panel.isVisible,
-                      panel.isKeyWindow else {
-                    self?.remove()
-                    return event
-                }
-                switch event.keyCode {
-                case 125:
-                    if count > 0 { selection.wrappedValue = min(selection.wrappedValue + 1, count - 1) }
-                    return nil
-                case 126:
-                    if count > 0 { selection.wrappedValue = max(selection.wrappedValue - 1, 0) }
-                    return nil
-                case 36, 76:
-                    onConfirm()
-                    return nil
-                case 53:
-                    onEscape()
-                    return nil
-                default:
-                    return event
-                }
-            }
-        }
-
-        func remove() {
-            if let monitor { NSEvent.removeMonitor(monitor) }
-            monitor = nil
-        }
-    }
-}
-
-private struct QuickFillCodeRow: View {
-    @ObservedObject var viewModel: CodeViewModel
-
-    var body: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 3) {
-                Text(viewModel.account.issuer).fontWeight(.semibold)
-                Text(viewModel.account.accountName).font(.caption).foregroundStyle(.secondary)
-            }
-            Spacer()
-            Text(viewModel.code)
-                .font(.system(.title3, design: .monospaced).weight(.bold))
-            Text("\(viewModel.remainingSeconds)s")
-                .font(.caption.monospacedDigit())
-                .foregroundStyle(.secondary)
         }
     }
 }

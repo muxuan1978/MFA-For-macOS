@@ -25,6 +25,7 @@
 		610780BBE55D14572A0DD6AC /* OTPAuthParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1083D055AD9A2717E2E3EA33 /* OTPAuthParser.swift */; };
 		673AF2488C619A53E5348EE7 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 6F05B9285D02BA8F19F52EA1 /* GRDB */; };
 		70FAE569E3671659B46DE8CF /* QRScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3E908D49FCB3301EA6EB9B /* QRScanView.swift */; };
+		7B95E880FB11AD907C952CCE /* QuickFillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE40AC00CF24203B1550AB05 /* QuickFillView.swift */; };
 		7FCE72F79FC15A75D8D7A785 /* Base32.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6D1EFABD7544216947EF1D /* Base32.swift */; };
 		9ECBB8F1BAD358663642328C /* GoogleAuthParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F4AC12BDE2136551973A2A /* GoogleAuthParser.swift */; };
 		9F079F31B782423802D998EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F0D2322C331FE8D20622A315 /* Assets.xcassets */; };
@@ -96,6 +97,7 @@
 		D5646A28D4BBC9B116973599 /* MainWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowView.swift; sourceTree = "<group>"; };
 		DA17992320768EC5715FEDF3 /* QuickFillController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickFillController.swift; sourceTree = "<group>"; };
 		DDA09BFD602C93520F429C9E /* ImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportView.swift; sourceTree = "<group>"; };
+		DE40AC00CF24203B1550AB05 /* QuickFillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickFillView.swift; sourceTree = "<group>"; };
 		EB6D1EFABD7544216947EF1D /* Base32.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base32.swift; sourceTree = "<group>"; };
 		F08771CB4589FBADEE351DFF /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		F0D2322C331FE8D20622A315 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 				9298D802E66E4FDF3B08A3F6 /* Components */,
 				9442700FF265AF9413E5F6A4 /* Main */,
 				C23FD9A62262CD65539D524A /* MenuBar */,
+				613F7EA5BEDFFB5D42FBC5C5 /* QuickFill */,
 				5A131F519456CCBC057A1A7F /* Scanner */,
 				4244968FC000F8BCB7EE5CB7 /* Settings */,
 			);
@@ -164,6 +167,14 @@
 				8A3E908D49FCB3301EA6EB9B /* QRScanView.swift */,
 			);
 			path = Scanner;
+			sourceTree = "<group>";
+		};
+		613F7EA5BEDFFB5D42FBC5C5 /* QuickFill */ = {
+			isa = PBXGroup;
+			children = (
+				DE40AC00CF24203B1550AB05 /* QuickFillView.swift */,
+			);
+			path = QuickFill;
 			sourceTree = "<group>";
 		};
 		69D6BBEDCC760A2A88DF7739 /* App */ = {
@@ -410,6 +421,7 @@
 				BB8602BDF4041EF37CE56F17 /* QRScanService.swift in Sources */,
 				70FAE569E3671659B46DE8CF /* QRScanView.swift in Sources */,
 				3E883B1937D607D1D7E42ABC /* QuickFillController.swift in Sources */,
+				7B95E880FB11AD907C952CCE /* QuickFillView.swift in Sources */,
 				A21D2EF3D5CFA1A5B5C971FE /* ScreenCaptureService.swift in Sources */,
 				E34E76DA54309C4BC263537C /* SettingsView.swift in Sources */,
 				30A47AAA21A9944FD9441311 /* TOTPAlgorithm.swift in Sources */,
